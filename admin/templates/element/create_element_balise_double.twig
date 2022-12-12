@@ -1,0 +1,12 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    {% if balise == 'content_media' %}
+        <h1>Vous avez choisi de créer un élément contenant un contenu à gauche et un média à droite</h1>
+    {% elseif balise == 'media_content' %}
+        <h1>Vous avez choisi de créer un élément contenant un média à gauche et un content à droite</h1>
+    {% endif %}
+    <form>
+        
+    </form>
+{% endblock %}

@@ -87,6 +87,7 @@ if ($userinfo['admin'] == 1) {
 				'contenu_article' => $elements_Article_read,
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'create_article' :
@@ -95,6 +96,7 @@ if ($userinfo['admin'] == 1) {
 				'create_article' => 'active',
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'edit_article' :
@@ -104,6 +106,7 @@ if ($userinfo['admin'] == 1) {
 				'articles' => $articles_readAll,
 				'edit_article' => 'active',
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'edit_article_parametres' :
@@ -114,6 +117,7 @@ if ($userinfo['admin'] == 1) {
 				'element_id' => $article_id,
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'article_parametres' :
@@ -127,6 +131,7 @@ if ($userinfo['admin'] == 1) {
 				'id_article' => $article_id,
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'delete_article' :
@@ -135,6 +140,7 @@ if ($userinfo['admin'] == 1) {
 				'articles' => $articles_readAll,
 				'id_article' => $article_id,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'read' :
@@ -143,6 +149,7 @@ if ($userinfo['admin'] == 1) {
 				'articles' => $articles_readAll,
 				'read' => 'active',
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'article_delete' :
@@ -228,15 +235,16 @@ if ($userinfo['admin'] == 1) {
 				'pages' => $pages_readAll,
 			];
 		break;
-		// case 'create_element_type' :
-		// 	$view = 'element/create_element_type.twig';
-		// 	$data = [
-		// 		'articles' => $articles_readAll,
-		// 		'create_element' => 'active',
-		// 		'pages' => $pages_readAll,
-		// 		'liaisons_all' => $liaisons_readAll,
-		// 	];
-		// break;
+		case 'create_element_balise_double' :
+			$view = 'element/create_element_balise_double.twig';
+			$data = [
+				'articles' => $articles_readAll,
+				'create_element' => 'active',
+				'pages' => $pages_readAll,
+				'balise' => $balise,
+				'username' => $userinfo['pseudo'],
+			];
+		break;
 		case 'create_element' :
 			$view = 'element/create_element.twig';
 			$data = [
@@ -244,23 +252,17 @@ if ($userinfo['admin'] == 1) {
 				'create_element' => 'active',
 				'pages' => $pages_readAll,
 				'liaisons_all' => $liaisons_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'create_element_balise' :
-			if (isset($_POST['media_balise'])) {
-				$media_balise = $_POST['media_balise'];
-			} else {
-				$media_balise = '';
-			}
 			$view = 'element/create_element_balise.twig';
 			$data = [
 				'articles' => $articles_readAll,
-				'media_balise' => $media_balise,
-				'liaison' => Liaisons::readLiaison($liaison),
 				'balise' => $_POST['balise'],
 				'create_element' => 'active',
 				'pages' => $pages_readAll,
-				'liaisons_all' => $liaisons_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'edit_element' :
@@ -270,6 +272,7 @@ if ($userinfo['admin'] == 1) {
 				'edit_element' => 'active',
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'delete_element' :
@@ -279,6 +282,7 @@ if ($userinfo['admin'] == 1) {
 				'id_element' => $element_id,
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'read' :
@@ -288,6 +292,7 @@ if ($userinfo['admin'] == 1) {
 				'read' => 'active',
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'element_delete' :
@@ -688,6 +693,7 @@ if ($userinfo['admin'] == 1) {
 				'element_id' => $element_id,
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 
@@ -699,6 +705,7 @@ if ($userinfo['admin'] == 1) {
 				'contenu_page' => $articles_page_read,
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'create_page' :
@@ -708,6 +715,7 @@ if ($userinfo['admin'] == 1) {
 				'create_page' => 'active',
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'edit_page' :
@@ -717,6 +725,7 @@ if ($userinfo['admin'] == 1) {
 				'articles' => $articles_readAll,
 				'edit_page' => 'active',
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'edit_page_parametres' :
@@ -726,6 +735,7 @@ if ($userinfo['admin'] == 1) {
 				'page_unique' => Page::readOne($page_id),
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'page_parametres' :
@@ -739,6 +749,7 @@ if ($userinfo['admin'] == 1) {
 				'id_page' => $page_id,
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'delete_page' :
@@ -747,6 +758,7 @@ if ($userinfo['admin'] == 1) {
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
 				'id_article' => $article_id,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'read' :
@@ -755,6 +767,7 @@ if ($userinfo['admin'] == 1) {
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
 				'read' => 'active',
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'page_delete' :
@@ -822,7 +835,7 @@ if ($userinfo['admin'] == 1) {
 			header('Location: index.php?action=update_page&page_id='.$_POST['page_to_edit']);
 		break;
 
-
+		// LIAISONS
 		case 'create_liaison' :
 			$view = 'liaison/create_liaison.twig';
 			$data = [
@@ -830,6 +843,7 @@ if ($userinfo['admin'] == 1) {
 				'articles' => $articles_readAll,
 				'liaisons' => $liaisons_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'liaison' :
@@ -844,6 +858,7 @@ if ($userinfo['admin'] == 1) {
 				'liaison' => $_POST['liaison'],
 				'elements_liaisons' => Liaisons::readLiaisonsNotAlone($_POST['article'], $_POST['liaison']),
 				'count_elements' => $count_elements[0]['count_element'],
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'new_liaison' :
@@ -861,12 +876,14 @@ if ($userinfo['admin'] == 1) {
 			}
 		break;
 
+		// INSCRIPTION / CONNEXION / DECONNEXION
 		case 'create_user' :
 			$view = "members/create_user.twig";
 			$data = [
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
 				'create_user' => 'active',
+				'username' => $userinfo['pseudo'],
 			];
 		break;
 		case 'new_user' :
@@ -923,6 +940,7 @@ if ($userinfo['admin'] == 1) {
 				'accueil' => 'active',
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
+				'username' => $userinfo['pseudo'],
 			];
 	}
 
