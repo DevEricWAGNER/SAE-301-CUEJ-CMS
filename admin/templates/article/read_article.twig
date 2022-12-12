@@ -1,0 +1,38 @@
+{% extends "base.twig" %}
+
+{% block title %}
+    {{unique_article.article_name}}
+{% endblock %}
+
+{% block desc %}
+  <meta name="description" content="{{unique_article.article_desc}}"> {# VISIBLE QUE SI LE SITE EST REFERENCE SUR LE WEB #}
+{% endblock %}
+
+{% block main %}
+    <h1>{{unique_article.article_name}}</h1>
+    <img src="{{unique_article.article_img}}">
+    <h2>{{unique_article.article_chapo}}</h2>
+    {% for contenu in contenu_article %}
+        {% if contenu.balise == 'img' %}
+            <img src="{{contenu.img_src}}" alt="{{contenu.img_alt}}" class="{{contenu.classCSS}}">
+            <br>
+            <span class="credit">{{contenu.credit}}</span>
+            <span class="legende">{{contenu.legende}}</span>
+        {% elseif contenu.balise == 'video' %}
+            <video id="my-video" class="video-js" controls preload="auto" width="160" poster="img/asterix.jpeg" data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }'>
+                <source src="{{contenu.img_src}}" type="video/mp4" />
+            </video>
+            <br>
+            <span class="credit">{{contenu.credit}}</span>
+            <span class="legende">{{contenu.legende}}</span>
+        {% elseif contenu.balise == 'audio' %}
+            <audio controls src="{{contenu.img_src}}" type="audio/mp3"></audio>
+            <br>
+            <span class="credit">{{contenu.credit}}</span>
+            <span class="legende">{{contenu.legende}}</span>
+        {% else %}
+            <{{contenu.balise}} class="{{contenu.classCSS}}">{{contenu.content}}</{{contenu.balise}}>
+        {% endif %}
+    {% endfor %}
+    <p>{{unique_article.article_auteur}}</p>
+{% endblock %}

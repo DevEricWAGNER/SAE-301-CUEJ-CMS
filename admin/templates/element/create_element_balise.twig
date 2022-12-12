@@ -1,0 +1,144 @@
+{% extends "base.twig" %}
+
+{% block main %}
+    <h1>Vous avez choisi la balise {{balise}}</h1>
+    {% if balise == 'img' %}
+        <form action="index.php?action=new_element&balise={{balise}}" method="post" enctype="multipart/form-data">
+            <div class="form_post">
+                    <div class="form_form">
+                        <select name="classCSS" id="classCSS" class="form_input">
+                            <option value="">--- Choisissez un style ---</option>
+                            <option value="img_left">Alignée à Gauche</option>
+                            <option value="img_right">Alignée à Droite</option>
+                            <option value="img_center">Alignée à Centre</option>
+                            <option value="full_size">Toute le largeur de la page</option>
+                        </select>
+                        <div class="form_input" id="InputFile">
+                            <label for="imgInp">
+                                Changer l'image
+                                <input type="file" name="my_image" id="imgInp" accept="image/*"/>
+                            </label>
+                        </div>
+                        <input type="text" name="legende" id="legende" placeholder="Légende de l'image" class="form_input">
+                        <input type="text" name="credit" id="credit" placeholder="Crédits de l'image" class="form_input">
+                        <input type="number" name="position" id="position" min="1" max="100" placeholder="Position de l'element" class="form_input">
+                        <select name="article" class="form_input">
+                            <option value="">---Choisissez un article---</option>
+                            {% for article in articles %}
+                                <option value="{{article.id}}">{{article.article_name}}</option>                            
+                            {% endfor %}
+                        </select>
+                        <select name="liaison" class="form_input">
+                            <option value="">--- Choisissez votre liaison ---</option>
+                            {% for liaison in liaisons_all %}
+                                <option value="{{liaison.id}}">{{liaison.text}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                <div class="form_img">
+                    <img id="blah" src="https://cdn-icons-png.flaticon.com/512/73/73775.png" alt="">
+                </div>
+            </div>
+            <input type="submit" value="Valider" class="form_input_submit" name="submit_img">
+        </form>
+
+    {% elseif balise == 'audio' %}
+        <form action="index.php?action=new_element&balise={{balise}}" method="post" enctype="multipart/form-data">
+            <div class="form_post">
+                    <div class="form_form">
+                        <select name="classCSS" id="classCSS" class="form_input">
+                            <option value="">--- Choisissez un style ---</option>
+                            <option value="img_left">Alignée à Gauche</option>
+                            <option value="img_right">Alignée à Droite</option>
+                            <option value="img_center">Alignée à Centre</option>
+                            <option value="full_size">Toute le largeur de la page</option>
+                        </select>
+                        <div class="form_input" id="InputFile">
+                            <label for="audioInp">
+                                Uploader un fichier audio 
+                                <input type="file" name="my_audio" id="audioInp" accept="audio/*"/>
+                            </label>
+                        </div>
+                        <input type="text" name="legende" id="legende" placeholder="Légende de l'audio" class="form_input">
+                        <input type="text" name="credit" id="credit" placeholder="Crédits de l'audio" class="form_input">
+                        <input type="number" name="position" id="position" min="1" max="100" placeholder="Position de l'element" class="form_input">
+                        <select name="article" class="form_input">
+                            <option value="">---Choisissez un article---</option>
+                            {% for article in articles %}
+                                <option value="{{article.id}}">{{article.article_name}}</option>                            
+                            {% endfor %}
+                        </select>
+                        <select name="liaison" class="form_input">
+                            <option value="">--- Choisissez votre liaison ---</option>
+                            {% for liaison in liaisons_all %}
+                                <option value="{{liaison.id}}">{{liaison.text}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+            </div>
+            <input type="submit" value="Valider" class="form_input_submit" name="submit_audio">
+        </form>
+    {% elseif balise == 'video' %}
+        <form action="index.php?action=new_element&balise={{balise}}" method="post" enctype="multipart/form-data">
+            <div class="form_post">
+                    <div class="form_form">
+                        <select name="classCSS" id="classCSS" class="form_input">
+                            <option value="">--- Choisissez un style ---</option>
+                            <option value="img_left">Alignée à Gauche</option>
+                            <option value="img_right">Alignée à Droite</option>
+                            <option value="img_center">Alignée à Centre</option>
+                            <option value="full_size">Toute le largeur de la page</option>
+                        </select>
+                        {# <input type="text" name="classCSS" id="classCSS" placeholder="Classe CSS" class="form_input"> #}
+                        <div class="form_input" id="InputFile">
+                            <label for="videoInp">
+                                Uploader une vidéo
+                                <input type="file" name="my_video" id="videoInp" accept="video/*"/>
+                            </label>
+                        </div>
+                        <input type="text" name="legende" id="legende" placeholder="Légende de la vidéo" class="form_input">
+                        <input type="text" name="credit" id="credit" placeholder="Crédits de la vidéo" class="form_input">
+                        <input type="number" name="position" id="position" min="1" max="100" placeholder="Position de l'element" class="form_input">
+                        <select name="article" class="form_input">
+                            <option value="">---Choisissez un article---</option>
+                            {% for article in articles %}
+                                <option value="{{article.id}}">{{article.article_name}}</option>                            
+                            {% endfor %}
+                        </select>
+                        <select name="liaison" class="form_input">
+                            <option value="">--- Choisissez votre liaison ---</option>
+                            {% for liaison in liaisons_all %}
+                                <option value="{{liaison.id}}">{{liaison.text}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+            </div>
+            <input type="submit" value="Valider" class="form_input_submit" name="submit_video">
+        </form>
+    {% else %}
+        <form action="index.php?action=new_element&balise={{balise}}" method="post" enctype="multipart/form-data">
+            <div class="form_post">
+                <div class="form_form">
+                    <input type="text" name="content" id="content" placeholder="Contenu de la balise" class="form_input">
+                    <input type="text" name="classCSS" id="classCSS" placeholder="Classe CSS" class="form_input">
+                    <input type="number" name="position" id="position" min="1" max="100" placeholder="Position de l'element" class="form_input">
+                    <select name="article" class="form_input">
+                        <option value="">---Choisissez un article---</option>
+                        {% for article in articles %}
+                            <option value="{{article.id}}">{{article.article_name}}</option>                            
+                        {% endfor %}
+                    </select>
+                    <select name="liaison" class="form_input">
+                        <option value="">--- Choisissez votre liaison ---</option>
+                        {% for liaison in liaisons_all %}
+                            <option value="{{liaison.id}}">{{liaison.text}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <input type="submit" value="Valider" class="form_input_submit" name="submit_text">
+        </form>
+    {% endif %}
+        <p class="delete_entry">Préférez-vous supprimer un element ?<br><a href="index.php?action=delete_element">Cliquez ici !</a></p>
+
+{% endblock main %}
