@@ -28,12 +28,6 @@
                                 <option value="{{article.id}}">{{article.article_name}}</option>                            
                             {% endfor %}
                         </select>
-                        <select name="liaison" class="form_input">
-                            <option value="">--- Choisissez votre liaison ---</option>
-                            {% for liaison in liaisons_all %}
-                                <option value="{{liaison.id}}">{{liaison.text}}</option>
-                            {% endfor %}
-                        </select>
                     </div>
                 <div class="form_img">
                     <img id="blah" src="https://cdn-icons-png.flaticon.com/512/73/73775.png" alt="">
@@ -68,12 +62,6 @@
                                 <option value="{{article.id}}">{{article.article_name}}</option>                            
                             {% endfor %}
                         </select>
-                        <select name="liaison" class="form_input">
-                            <option value="">--- Choisissez votre liaison ---</option>
-                            {% for liaison in liaisons_all %}
-                                <option value="{{liaison.id}}">{{liaison.text}}</option>
-                            {% endfor %}
-                        </select>
                     </div>
             </div>
             <input type="submit" value="Valider" class="form_input_submit" name="submit_audio">
@@ -103,12 +91,6 @@
                             <option value="">---Choisissez un article---</option>
                             {% for article in articles %}
                                 <option value="{{article.id}}">{{article.article_name}}</option>                            
-                            {% endfor %}
-                        </select>
-                        <select name="liaison" class="form_input">
-                            <option value="">--- Choisissez votre liaison ---</option>
-                            {% for liaison in liaisons_all %}
-                                <option value="{{liaison.id}}">{{liaison.text}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -154,12 +136,6 @@
                         <option value="">---Choisissez un article---</option>
                         {% for article in articles %}
                             <option value="{{article.id}}">{{article.article_name}}</option>                            
-                        {% endfor %}
-                    </select>
-                    <select name="liaison" class="form_input">
-                        <option value="">--- Choisissez votre liaison ---</option>
-                        {% for liaison in liaisons_all %}
-                            <option value="{{liaison.id}}">{{liaison.text}}</option>
                         {% endfor %}
                     </select>
                 </div>
