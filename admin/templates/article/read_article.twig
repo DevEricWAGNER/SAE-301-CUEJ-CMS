@@ -77,18 +77,6 @@
                     <span>{{contenu.credit2}}</span>
                 </div>
             </div>
-        {% elseif contenu.balise == 'img_content' %}
-            <div class="flex-row">
-                <div>
-                    <img src="{{contenu.img_src}}" class="{{contenu.classCSS1}}">
-                    <span>{{contenu.legende1}}</span>
-                    <br>
-                    <span>{{contenu.credit1}}</span>
-                </div>
-                <div>
-                    <p>{{contenu.content}}</p>
-                </div>
-            </div>
         {% elseif contenu.balise == 'video_img' %}
             <div class="flex-row">
                 <div>
@@ -142,20 +130,6 @@
                     <span>{{contenu.credit2}}</span>
                 </div>
             </div>
-        {% elseif contenu.balise == 'video_content' %}
-            <div class="flex-row">
-                <div>
-                    <video id="my-video" class="video-js" controls preload="auto" width="160" poster="{{contenu.src_minia_1}}" data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }'>
-                        <source src="{{contenu.img_src}}" type="video/mp4" />
-                    </video>
-                    <span>{{contenu.legende1}}</span>
-                    <br>
-                    <span>{{contenu.credit1}}</span>
-                </div>
-                <div>
-                    <p>{{contenu.content}}</p>
-                </div>
-            </div>
         {% elseif contenu.balise == 'audio_img' %}
             <div class="flex-row">
                 <div>
@@ -195,56 +169,6 @@
                     <span>{{contenu.legende1}}</span>
                     <br>
                     <span>{{contenu.credit1}}</span>
-                </div>
-                <div>
-                    <audio controls src="{{contenu.src1}}" type="audio/mp3"></audio>
-                    <span>{{contenu.legende2}}</span>
-                    <br>
-                    <span>{{contenu.credit2}}</span>
-                </div>
-            </div>
-        {% elseif contenu.balise == 'audio_content' %}
-            <div class="flex-row">
-                <div>
-                    <audio controls src="{{contenu.img_src}}" type="audio/mp3"></audio>
-                    <span>{{contenu.legende1}}</span>
-                    <br>
-                    <span>{{contenu.credit1}}</span>
-                </div>
-                <div>
-                    <p>{{contenu.content}}</p>
-                </div>
-            </div>
-        {% elseif contenu.balise == 'content_img' %}
-            <div class="flex-row">
-                <div>
-                    <p>{{contenu.content}}</p>
-                </div>
-                <div>
-                    <img src="{{contenu.img_src}}" class="{{contenu.classCSS1}}">
-                    <span>{{contenu.legende2}}</span>
-                    <br>
-                    <span>{{contenu.credit2}}</span>
-                </div>
-            </div>
-        {% elseif contenu.balise == 'content_video' %}
-            <div class="flex-row">
-                <div>
-                    <p>{{contenu.content}}</p>
-                </div>
-                <div>
-                    <video id="my-video" class="video-js" controls preload="auto" width="160" poster="{{contenu.src_minia_1}}" data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }'>
-                        <source src="{{contenu.src1}}" type="video/mp4" />
-                    </video>
-                    <span>{{contenu.legende2}}</span>
-                    <br>
-                    <span>{{contenu.credit2}}</span>
-                </div>
-            </div>
-        {% elseif contenu.balise == 'content_audio' %}
-            <div class="flex-row">
-                <div>
-                    <p>{{contenu.content}}</p>
                 </div>
                 <div>
                     <audio controls src="{{contenu.src1}}" type="audio/mp3"></audio>

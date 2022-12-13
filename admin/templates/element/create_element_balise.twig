@@ -97,26 +97,18 @@
             </div>
             <input type="submit" value="Valider" class="form_input_submit" name="submit_video">
         </form>
-    {% elseif balise == 'content_media' or balise == 'media_content' %}
+    {% elseif balise == 'media_media' %}
         <form action="index.php?action=create_element_balise_double&balise={{balise}}" method="post" enctype="multipart/form-data">
             <div class="form_post">
                 <div class="form_form">
                     <select name="element1" class="form_input">
                         <option value="">--- Choisissez votre premier element ---</option>
-                        <option value="p">Texte</option>
-                        <option value="h2">Inter Titre / Titre Encadré</option>
-                        <option value="h5">Exergue</option>
-                        <option value="h3">Titre article secondaire</option>
                         <option value="img">Image</option>
                         <option value="video">Videos</option>
                         <option value="audio">Audio</option>
                     </select>
                     <select name="element2" class="form_input">
                         <option value="">--- Choisissez votre premier element ---</option>
-                        <option value="p">Texte</option>
-                        <option value="h2">Inter Titre / Titre Encadré</option>
-                        <option value="h5">Exergue</option>
-                        <option value="h3">Titre article secondaire</option>
                         <option value="img">Image</option>
                         <option value="video">Videos</option>
                         <option value="audio">Audio</option>
