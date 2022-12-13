@@ -44,13 +44,13 @@ class Element {
         } else {
           $this->classCSS = '';
         }
-        if (isset($_POST['alt'])) {
-          $this->img_alt = $_POST['alt'];
+        if (isset($_POST['alt1'])) {
+          $this->img_alt = $_POST['alt1'];
         } else {
           $this->img_alt = '';
         }
-        if (isset($_POST['src'])) {
-          $this->img_src = $_POST['src'];
+        if (isset($_POST['src1'])) {
+          $this->img_src = $_POST['src1'];
         } else {
           $this->img_src = '';
         }
@@ -88,13 +88,13 @@ class Element {
         } else {
           $this->classCSS = '';
         }
-        if (isset($_POST['alt'])) {
-          $this->img_alt = $_POST['alt'];
+        if (isset($_POST['alt1'])) {
+          $this->img_alt = $_POST['alt1'];
         } else {
           $this->img_alt = '';
         }
-        if (isset($_POST['src'])) {
-          $this->img_src = $_POST['src'];
+        if (isset($_POST['src1'])) {
+          $this->img_src = $_POST['src1'];
         } else {
           $this->img_src = '';
         }
@@ -108,25 +108,19 @@ class Element {
         } else {
           $this->article = '';
         }
-        if (isset($_POST['liaison'])) {
-          $this->liaison = $_POST['liaison'];
-        } else {
-          $this->liaison = '';
-        }
       }
 
       function create() {
-        $sql = 'INSERT INTO `element` (`balise`, `classCSS`, `content`, `img_alt`, `img_src`, `position`, `article`, `liaison`) VALUES (:balise, :classCSS, :content, :img_alt, :img_src, :position, :article, :liaison);';
+        $sql = 'INSERT INTO `element` (`balise`, `classCSS`, `content`, `alt1`, `src1`, `position`, `article`) VALUES (:balise, :classCSS, :content, :alt1, :src1, :position, :article);';
         $pdo = connexion();
         $query = $pdo->prepare($sql);
         $query->bindValue(':balise', $this->balise, PDO::PARAM_STR);
         $query->bindValue(':classCSS', $this->classCSS, PDO::PARAM_STR);
         $query->bindValue(':content', $this->content, PDO::PARAM_STR);
-        $query->bindValue(':img_alt', $this->img_alt, PDO::PARAM_STR);
-        $query->bindValue(':img_src', $this->img_src, PDO::PARAM_STR);
+        $query->bindValue(':alt1', $this->img_alt, PDO::PARAM_STR);
+        $query->bindValue(':src1', $this->img_src, PDO::PARAM_STR);
         $query->bindValue(':position', $this->position, PDO::PARAM_STR);
         $query->bindValue(':article', $this->article, PDO::PARAM_STR);
-        $query->bindValue(':liaison', $this->liaison, PDO::PARAM_STR);
         $query->execute();
         $this->id = $pdo->lastInsertId();
       }

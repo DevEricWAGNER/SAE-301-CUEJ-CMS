@@ -37,7 +37,6 @@ if ($userinfo['admin'] == 1) {
 	// Connexion à la base de données
 	include('include/page.php');
 	include('include/article.php');
-	include('include/liaisons.php');
 	include('include/element.php');
 	
 
@@ -58,14 +57,13 @@ if ($userinfo['admin'] == 1) {
 	$count_pages = Page::readCountPage();
 	$count_page = object_to_array($count_pages);
 
-	$liaisons_readAll = Liaisons::readAll();
 	$pages_readAll = Page::readAll();
 	$articles_readAll = Article::readAll();
 	$elements_readAll = Element::readAll();
 	$unique_article = Article::readArticleHeader($article_id);
 	$unique_page = Page::readPageHeader($page_id);
 	$elements_Article_read = Element::readArticle($article_id);
-	$articles_page_read = Article::readPage($page_id);
+	$articles_page_read = Article::readPage($page_id, $article_id);
 
 
 	// $article_unique = object_to_array($unique_article);
@@ -90,6 +88,7 @@ if ($userinfo['admin'] == 1) {
 				'articles' => $articles_readAll,
 				'pages' => $pages_readAll,
 				'username' => $userinfo['pseudo'],
+				'articles_in_unique_page' => $articles_page_read,
 			];
 		break;
 		case 'create_article' :
@@ -328,7 +327,7 @@ if ($userinfo['admin'] == 1) {
 							// Insert into Database
 	
 	
-							$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `position`, `legende`, `credit`, `article`)
+							$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `alt1`, `src1`, `position`, `legende1`, `credit1`, `article`)
 										VALUES (:balise, :classCSS, :img_alt, :img_src, :position, :legende, :credit, :article);';
 							$pdo = connexion();
 							$query = $pdo->prepare($sql);
@@ -375,8 +374,8 @@ if ($userinfo['admin'] == 1) {
 							// Insert into Database
 	
 	
-							$sql = '	INSERT INTO `element` (`balise`, `classCSS`,  `img_src`, `position`, `legende`, `credit`, `article`, `liaison`)
-										VALUES (:balise, :classCSS, :img_src, :position, :legende, :credit, :article, :liaison);';
+							$sql = '	INSERT INTO `element` (`balise`, `classCSS`,  `src1`, `position`, `legende1`, `credit1`, `article`)
+										VALUES (:balise, :classCSS, :img_src, :position, :legende, :credit, :article);';
 							$pdo = connexion();
 							$query = $pdo->prepare($sql);
 							$query->bindValue(':balise', $balise, PDO::PARAM_STR);
@@ -386,7 +385,6 @@ if ($userinfo['admin'] == 1) {
 							$query->bindValue(':credit', $_POST['credit'], PDO::PARAM_STR);
 							$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
 							$query->bindValue(':article', $_POST['article'], PDO::PARAM_STR);
-							$query->bindValue(':liaison', $_POST['liaison'], PDO::PARAM_STR);
 							$query->execute();
 							header("Location: index.php");
 						} else {
@@ -427,8 +425,8 @@ if ($userinfo['admin'] == 1) {
 	  
 					  // Insert into Database
 	  
-						$sql = '	INSERT INTO `element` (`balise`, `classCSS`,  `img_src`, `position`, `legende`, `credit`, `article`, `liaison`)
-									VALUES (:balise, :classCSS, :img_src, :position, :legende, :credit, :article, :liaison);';
+						$sql = '	INSERT INTO `element` (`balise`, `classCSS`,  `src1`, `position`, `legende1`, `credit1`, `article`)
+									VALUES (:balise, :classCSS, :img_src, :position, :legende, :credit, :article);';
 						$pdo = connexion();
 						$query = $pdo->prepare($sql);
 						$query->bindValue(':balise', $balise, PDO::PARAM_STR);
@@ -438,7 +436,6 @@ if ($userinfo['admin'] == 1) {
 						$query->bindValue(':credit', $_POST['credit'], PDO::PARAM_STR);
 						$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
 						$query->bindValue(':article', $_POST['article'], PDO::PARAM_STR);
-						$query->bindValue(':liaison', $_POST['liaison'], PDO::PARAM_STR);
 						$query->execute();
 					  	header("Location: index.php");
 					} else {
@@ -489,15 +486,16 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `src1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
-											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `alt1`, `src1`, `alt2`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :alt1, :src1, :alt2, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'img_img', PDO::PARAM_STR);
 								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
-								$query->bindValue(':img_alt', $img_name1, PDO::PARAM_STR);
-								$query->bindValue(':img_src', $img_upload_path1, PDO::PARAM_STR);
-								$query->bindValue(':src1', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':alt1', $img_name1, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':alt2', $img_name2, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
 								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
 								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
 								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
@@ -548,15 +546,15 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `src1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`, `liaison`)
-											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article, :liaison);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `alt1`, `src1`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`, `liaison`)
+											VALUES (:balise, :classCSS, :alt1, :src1, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article, :liaison);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'img_video', PDO::PARAM_STR);
 								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
-								$query->bindValue(':img_alt', $img_name1, PDO::PARAM_STR);
-								$query->bindValue(':img_src', $img_upload_path1, PDO::PARAM_STR);
-								$query->bindValue(':src1', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':alt1', $img_name1, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
 								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
 								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
 								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
@@ -607,15 +605,15 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `src1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`, `liaison`)
-											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `alt1`, `src1`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`, `liaison`)
+											VALUES (:balise, :classCSS, :alt1, :src1, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'img_audio', PDO::PARAM_STR);
 								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
-								$query->bindValue(':img_alt', $img_name1, PDO::PARAM_STR);
-								$query->bindValue(':img_src', $img_upload_path1, PDO::PARAM_STR);
-								$query->bindValue(':src1', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':alt1', $img_name1, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
 								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
 								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
 								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
@@ -666,15 +664,15 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `src1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
-											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `alt2`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :src1, :alt2, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'video_img', PDO::PARAM_STR);
 								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
-								$query->bindValue(':img_alt', $img_name1, PDO::PARAM_STR);
-								$query->bindValue(':img_src', $img_upload_path1, PDO::PARAM_STR);
-								$query->bindValue(':src1', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':alt2', $img_name2, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
 								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
 								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
 								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
@@ -725,15 +723,14 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `src1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
-											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :src1, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'video_video', PDO::PARAM_STR);
 								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
-								$query->bindValue(':img_alt', $img_name1, PDO::PARAM_STR);
-								$query->bindValue(':img_src', $img_upload_path1, PDO::PARAM_STR);
-								$query->bindValue(':src1', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
 								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
 								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
 								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
@@ -784,15 +781,14 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `src1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
-											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :src1, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'video_audio', PDO::PARAM_STR);
 								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
-								$query->bindValue(':img_alt', $img_name1, PDO::PARAM_STR);
-								$query->bindValue(':img_src', $img_upload_path1, PDO::PARAM_STR);
-								$query->bindValue(':src1', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
 								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
 								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
 								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
@@ -843,15 +839,15 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `src1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
-											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `alt2`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :src1, :alt2, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'audio_img', PDO::PARAM_STR);
 								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
-								$query->bindValue(':img_alt', $img_name1, PDO::PARAM_STR);
-								$query->bindValue(':img_src', $img_upload_path1, PDO::PARAM_STR);
-								$query->bindValue(':src1', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':alt2', $img_name2, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
 								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
 								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
 								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
@@ -902,15 +898,14 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `src1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
-											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :src1, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'audio_video', PDO::PARAM_STR);
 								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
-								$query->bindValue(':img_alt', $img_name1, PDO::PARAM_STR);
-								$query->bindValue(':img_src', $img_upload_path1, PDO::PARAM_STR);
-								$query->bindValue(':src1', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
 								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
 								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
 								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
@@ -961,15 +956,14 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `src1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
-											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :src1, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'audio_audio', PDO::PARAM_STR);
 								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
-								$query->bindValue(':img_alt', $img_name1, PDO::PARAM_STR);
-								$query->bindValue(':img_src', $img_upload_path1, PDO::PARAM_STR);
-								$query->bindValue(':src1', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
 								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
 								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
 								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
@@ -1026,14 +1020,14 @@ if ($userinfo['admin'] == 1) {
 
 							// Insert into Database
 
-								$sql = 'UPDATE `element` SET classCSS = :classCSS, credit = :credit, legende = :legende, img_alt = :img_alt, img_src = :img_src, position = :position;';
+								$sql = 'UPDATE `element` SET classCSS = :classCSS, credit = :credit, legende = :legende, alt1 = :alt1, src1 = :src1, position = :position;';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':classCSS', $_POST['classCSS'], PDO::PARAM_STR);
 								$query->bindValue(':legende', $_POST['legende'], PDO::PARAM_STR);
 								$query->bindValue(':credit', $_POST['credit'], PDO::PARAM_STR);
-								$query->bindValue(':img_alt', $img_name, PDO::PARAM_STR);
-								$query->bindValue(':img_src', $img_upload_path, PDO::PARAM_STR);
+								$query->bindValue(':alt1', $img_name, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path, PDO::PARAM_STR);
 								$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
 								$query->execute();
 								header("Location: index.php");
@@ -1067,13 +1061,13 @@ if ($userinfo['admin'] == 1) {
 
 							// Insert into Database
 
-								$sql = 'UPDATE `element` SET classCSS = :classCSS, credit = :credit, legende = :legende, img_alt = :img_alt, img_src = :img_src, position = :position;';
+								$sql = 'UPDATE `element` SET classCSS = :classCSS, credit = :credit, legende = :legende, src1 = :src1, position = :position;';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':classCSS', $_POST['classCSS'], PDO::PARAM_STR);
 								$query->bindValue(':legende', $_POST['legende'], PDO::PARAM_STR);
 								$query->bindValue(':credit', $_POST['credit'], PDO::PARAM_STR);
-								$query->bindValue(':src2', $img_upload_path, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path, PDO::PARAM_STR);
 								$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
 								$query->execute();
 								header("Location: index.php");
@@ -1107,7 +1101,7 @@ if ($userinfo['admin'] == 1) {
 
 							// Insert into Database
 
-								$sql = 'UPDATE `element` SET classCSS = :classCSS, credit = :credit, legende = :legende, img_alt = :img_alt, img_src = :img_src, position = :position;';
+								$sql = 'UPDATE `element` SET classCSS = :classCSS, credit = :credit, legende = :legende, src1 = :src1, position = :position;';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':classCSS', $_POST['classCSS'], PDO::PARAM_STR);

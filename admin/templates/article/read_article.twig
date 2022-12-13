@@ -181,5 +181,15 @@
             <{{contenu.balise}} class="{{contenu.classCSS}}">{{contenu.content|replace({'\\\\': "<i>", "//" : "</i>"})|raw}}</{{contenu.balise}}>
         {% endif %}
     {% endfor %}
+
+    {% for article_in_page in articles_in_unique_page %}
+        <h1>{{article_in_page.article_name}}</h1>
+        <p>{{article_in_page.article_desc}}</p>
+        <p>{{article_in_page.article_chapo}}</p>
+        <span>{{article_in_page.article_auteur}}</span>
+        <h6>{{article_in_page.article_time}}</h6>
+        <img src="{{article_in_page.article_img}}">
+        <img src="{{article_in_page.article_vignette}}">
+    {% endfor %}
     <p>{{unique_article.article_auteur}}</p>
 {% endblock %}

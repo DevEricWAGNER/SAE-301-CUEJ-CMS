@@ -3,13 +3,13 @@
     class Article {
         public $id;
         public $article_name;
-        public $article_title;
         public $article_desc;
-        public $article_titre;
         public $article_chapo;
         public $article_auteur;
         public $article_page;
         public $article_time;
+        public $article_vignette;
+
 
         static function readAll() {
             $sql= 'SELECT * FROM article';
@@ -27,22 +27,10 @@
               $this->article_name = '';
             }
 
-            if (isset($_POST['article_title'])) {
-              $this->article_title = $_POST['article_title'];
-            } else {
-              $this->article_title = '';
-            }
-
             if (isset($_POST['article_desc'])) {
               $this->article_desc = $_POST['article_desc'];
             } else {
               $this->article_desc = '';
-            }
-
-            if (isset($_POST['article_titre'])) {
-              $this->article_titre = $_POST['article_titre'];
-            } else {
-              $this->article_titre = '';
             }
 
             if (isset($_POST['article_chapo'])) {
@@ -69,11 +57,17 @@
               $this->article_time = '';
             }
 
+            if (isset($_POST['article_vignette'])) {
+              $this->article_vignette = $_POST['article_vignette'];
+            } else {
+              $this->article_vignette = '';
+            }
+
 
         }
 
         function create() {
-            $sql = 'INSERT INTO `article` (`article_name`, `article_desc`, `article_chapo`, `article_auteur`, `article_page`, `article_time`) VALUES (:article_name, :article_desc, :article_chapo,  :article_auteur, :article_page, :article_time);';
+            $sql = 'INSERT INTO `article` (`article_name`, `article_desc`, `article_chapo`, `article_auteur`, `article_page`, `article_time`, `article_vignette`) VALUES (:article_name, :article_desc, :article_chapo,  :article_auteur, :article_page, :article_time, :article_vignette);';
             $pdo = connexion();
             $query = $pdo->prepare($sql);
             $query->bindValue(':article_name', $this->article_name, PDO::PARAM_STR);
@@ -82,6 +76,7 @@
             $query->bindValue(':article_auteur', $this->article_auteur, PDO::PARAM_STR);
             $query->bindValue(':article_page', $this->article_page, PDO::PARAM_STR);
             $query->bindValue(':article_time', $this->article_time, PDO::PARAM_STR);
+            $query->bindValue(':article_vignette', $this->article_vignette, PDO::PARAM_STR);
             $query->execute();
             $this->id = $pdo->lastInsertId();
           }
@@ -116,7 +111,7 @@
 
 
           function update($id) {
-            $sql = 'UPDATE article SET article_name = :article_name, article_desc = :article_desc, article_chapo = :article_chapo, article_auteur = :article_auteur, article_page = :article_page, article_time = :article_time WHERE id = :id;';
+            $sql = 'UPDATE article SET article_name = :article_name, article_desc = :article_desc, article_chapo = :article_chapo, article_auteur = :article_auteur, article_page = :article_page, article_time = :article_time, article_vignette = :article_vignette WHERE id = :id;';
             $pdo = connexion();
             $query = $pdo->prepare($sql);
             $query->bindValue(':id', $id, PDO::PARAM_INT);
@@ -126,14 +121,16 @@
             $query->bindValue(':article_auteur', $this->article_auteur, PDO::PARAM_STR);
             $query->bindValue(':article_page', $this->article_page, PDO::PARAM_STR);
             $query->bindValue(':article_time', $this->article_time, PDO::PARAM_STR);
+            $query->bindValue(':article_vignette', $this->article_vignette, PDO::PARAM_STR);
             $query->execute();
           }
 
-          static function readPage($id) {
-            $sql= 'SELECT * FROM article WHERE article.article_page = :page_id';
+          static function readPage($id, $article_id) {
+            $sql= 'SELECT * FROM article WHERE article.article_page = :page_id AND article.id != :article_id';
             $pdo = connexion();
             $query = $pdo->prepare($sql);
             $query->bindValue(':page_id', $id, PDO::PARAM_INT);
+            $query->bindValue(':article_id', $article_id, PDO::PARAM_INT);
             $query->execute();
             $tableau = $query->fetchAll(PDO::FETCH_CLASS,'Article');
             return $tableau;
