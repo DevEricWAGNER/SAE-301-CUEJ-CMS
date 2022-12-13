@@ -133,6 +133,7 @@ class Element {
 
       function delete($id) {
         $element = Element::readOne($id);
+        var_dump($element);
         unlink($element->img_src);
         unlink($element->src1);
         unlink($element->src2);
@@ -160,7 +161,7 @@ class Element {
       $query = $pdo->prepare($sql);
       $query->bindValue(':element_id', $id, PDO::PARAM_STR);
       $query->execute();
-      $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'Element');
+      $tableau = $query->fetchObject('Element');
       return $tableau;
     }
 

@@ -6,7 +6,7 @@
     {% elseif balise == 'media_content' %}
         <h1>Vous avez choisi de créer un élément contenant un média à gauche et un content à droite</h1>
     {% endif %}
-    <form method="post" action="index.php?action=new_element&balise={{balise}}&element1={{element1}}&element2={{element2}}">
+    <form method="post" action="index.php?action=new_element&balise={{balise}}&element1={{element1}}&element2={{element2}}" enctype="multipart/form-data">
        <div class="form_post">
             <div class="form_form">
                 <h1>Vous avez choisi la balise {{element1}}</h1>

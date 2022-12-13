@@ -466,7 +466,7 @@ if ($userinfo['admin'] == 1) {
 					$tmp_name2 = $_FILES['my_image2']['tmp_name'];
 					$error2 = $_FILES['my_image2']['error'];
 
-					if ($error1 === 0 AND $error2 === 0) {
+					if ($error1 === 0) {
 						if ($img_size1 > 12500000 AND $img_size2 > 12500000) {
 							$em = "Trop gros";
 							header("Location: index.php?error=$em");
@@ -489,8 +489,8 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `src1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`, `liaison`)
-											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article, :liaison);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `img_alt`, `img_src`, `src1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'img_img', PDO::PARAM_STR);
@@ -1059,7 +1059,7 @@ if ($userinfo['admin'] == 1) {
 											VALUES (:balise, :classCSS, :img_alt, :img_src, :src1, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
-								$query->bindValue(':balise', 'audio_video', PDO::PARAM_STR);
+								$query->bindValue(':balise', 'audio_audio', PDO::PARAM_STR);
 								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
 								$query->bindValue(':img_alt', $img_name1, PDO::PARAM_STR);
 								$query->bindValue(':img_src', $img_upload_path1, PDO::PARAM_STR);
@@ -1271,6 +1271,7 @@ if ($userinfo['admin'] == 1) {
 					}
 				} else {
 					echo('Une erreur est survenue');
+					echo("<a href='index.php'>Revenir à la page d'accueil</a>");
 				}
 			}
 		break;
@@ -1651,47 +1652,6 @@ if ($userinfo['admin'] == 1) {
 		break;
 		case 'page' :
 			header('Location: index.php?action=update_page&page_id='.$_POST['page_to_edit']);
-		break;
-
-		// LIAISONS
-		case 'create_liaison' :
-			$view = 'liaison/create_liaison.twig';
-			$data = [
-				'create_liaison' => 'active',
-				'articles' => $articles_readAll,
-				'liaisons' => $liaisons_readAll,
-				'pages' => $pages_readAll,
-				'username' => $userinfo['pseudo'],
-			];
-		break;
-		case 'liaison' :
-			$count_elements = Liaisons::readCountElement($_POST['article'], $_POST['liaison']);
-			$count_elements = object_to_array($count_elements);
-			$view = 'liaison/liaison.twig';
-			$data = [
-				'create_liaison' => 'active',
-				'articles' => $articles_readAll,
-				'pages' => $pages_readAll,
-				'article' => $_POST['article'],
-				'liaison' => $_POST['liaison'],
-				'elements_liaisons' => Liaisons::readLiaisonsNotAlone($_POST['article'], $_POST['liaison']),
-				'count_elements' => $count_elements[0]['count_element'],
-				'username' => $userinfo['pseudo'],
-			];
-		break;
-		case 'new_liaison' :
-			if (isset($_POST['element1']) && isset($_POST['element2']) && isset($_POST['submit_liaison'])) {
-				if($_POST['element1'] == $_POST['element2']) {
-					$em = 'Erreur';
-					header('Location: index.php?error='.$em);
-				} else {
-					// $sql = "UPDATE element SET lier_a = :lier_a WHERE id = :id";
-					$liaison = new Liaisons();
-					$liaison->update($_POST['element1'], $_POST['element2']);
-					$liaison->update($_POST['element2'], $_POST['element1']);
-					header('Location: index.php');
-				}
-			}
 		break;
 
 		// INSCRIPTION / CONNEXION / DECONNEXION

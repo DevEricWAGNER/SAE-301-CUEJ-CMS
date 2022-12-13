@@ -263,3 +263,8 @@ aside a:hover {
  } 
 
 
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
