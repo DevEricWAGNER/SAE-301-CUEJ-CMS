@@ -31,7 +31,11 @@
             <span class="credit">{{contenu.credit}}</span>
             <span class="legende">{{contenu.legende}}</span>
         {% else %}
-            <{{contenu.balise}} class="{{contenu.classCSS}}">{{contenu.content}}</{{contenu.balise}}>
+            <{{contenu.balise}} class="{{contenu.classCSS}}">
+            
+                {{contenu.content|replace({'\\\\': "<i>", "//" : "</i>"})|raw}}
+            
+            </{{contenu.balise}}>
         {% endif %}
     {% endfor %}
     <p>{{unique_article.article_auteur}}</p>

@@ -99,6 +99,7 @@
             $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'Page');
             return $tableau;
           }
+          
     }
 
 ?>

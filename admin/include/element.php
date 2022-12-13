@@ -132,6 +132,10 @@ class Element {
       }
 
       function delete($id) {
+        $element = Element::readOne($id);
+        unlink($element->img_src);
+        unlink($element->src1);
+        unlink($element->src2);
         $sql = "DELETE FROM element WHERE id = :id";
         $pdo = connexion();
         $query = $pdo->prepare($sql);
