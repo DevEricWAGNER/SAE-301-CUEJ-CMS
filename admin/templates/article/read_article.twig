@@ -303,6 +303,46 @@
                     <span>{{contenu.credit2}}</span>
                 </div>
             </div>
+        {% elseif contenu.balise == 'encadre_content' %}
+            <div>
+                <h4>{{contenu.encadre_titre}}</h4>
+                <p>{{contenu.content}}</p>
+            </div>
+        {% elseif contenu.balise == 'encadre_img' %}
+            <div>
+                <h4>{{contenu.encadre_titre}}</h4>
+                <img src="{{contenu.src1}}" alt="{{contenu.alt1}}">
+                <br>
+                <span class="credit">{{contenu.credit1}}</span>
+                <span class="legende">{{contenu.legende1}}</span>
+            </div>
+        {% elseif contenu.balise == 'encadre_audio' %}
+            <div>
+                <h4>{{contenu.encadre_titre}}</h4>
+                <audio controls src="{{contenu.src1}}" type="audio/mp3"></audio>
+                <br>
+                <span class="credit">{{contenu.credit1}}</span>
+                <span class="legende">{{contenu.legende1}}</span>
+            </div>
+        {% elseif contenu.balise == 'encadre_audio_image' %}
+            <div>
+                <h4>{{contenu.encadre_titre}}</h4>
+                <img src="{{contenu.src_media1}}" alt="{{contenu.alt_media1}}" class="{{contenu.classCSS1}}">
+                <audio controls src="{{contenu.src1}}" type="audio/mp3"></audio>
+                <br>
+                <span class="credit">{{contenu.credit1}}</span>
+                <span class="legende">{{contenu.legende1}}</span>
+            </div>
+        {% elseif contenu.balise == 'encadre_video' %}
+            <div>
+                <h4>{{contenu.encadre_titre}}</h4>
+                <video id="my-video" class="video-js" controls preload="auto" width="160" poster="{{contenu.src_media1}}" data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }'>
+                    <source src="{{contenu.src1}}" type="video/mp4" />
+                </video>
+                <br>
+                <span class="credit">{{contenu.credit1}}</span>
+                <span class="legende">{{contenu.legende1}}</span>
+            </div>
         {% else %}
             <{{contenu.balise}} class="{{contenu.classCSS1}}">{{contenu.content|replace({'\\\\': "<i>", "//" : "</i>"})|raw}}</{{contenu.balise}}>
         {% endif %}

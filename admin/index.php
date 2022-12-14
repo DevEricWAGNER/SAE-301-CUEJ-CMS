@@ -1733,6 +1733,11 @@ if ($userinfo['admin'] == 1) {
 					echo('Une erreur est survenue');
 					echo("<a href='index.php'>Revenir à la page d'accueil</a>");
 				}
+			} elseif(isset($_POST['submit_encadre_content'])) {
+				$element = new element();
+				$element->chargePOST_balise($balise);
+				$element->create();
+				header('Location: index.php');
 			}
 		break;
 		case 'element' :

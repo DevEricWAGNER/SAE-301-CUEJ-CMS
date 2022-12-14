@@ -71,6 +71,11 @@ class Element {
         } else {
           $this->balise = '';
         }
+        if (isset($_POST['title_encadre'])) {
+          $this->encadre_titre = $_POST['title_encadre'];
+        } else {
+          $this->encadre_titre = '';
+        }
         if (isset($_POST['content'])) {
           $chaine = $_POST['content'];
           $chainemodifie_inter = str_replace(' ?',' ?',$chaine);
@@ -111,12 +116,13 @@ class Element {
       }
 
       function create() {
-        $sql = 'INSERT INTO `element` (`balise`, `classCSS1`, `content`, `alt1`, `src1`, `position`, `article`) VALUES (:balise, :classCSS, :content, :alt1, :src1, :position, :article);';
+        $sql = 'INSERT INTO `element` (`balise`, `classCSS1`, `encadre_titre`, `content`, `alt1`, `src1`, `position`, `article`) VALUES (:balise, :classCSS, :encadre_titre, :content, :alt1, :src1, :position, :article);';
         $pdo = connexion();
         $query = $pdo->prepare($sql);
         $query->bindValue(':balise', $this->balise, PDO::PARAM_STR);
         $query->bindValue(':classCSS', $this->classCSS, PDO::PARAM_STR);
         $query->bindValue(':content', $this->content, PDO::PARAM_STR);
+        $query->bindValue(':encadre_titre', $this->encadre_titre, PDO::PARAM_STR);
         $query->bindValue(':alt1', $this->img_alt, PDO::PARAM_STR);
         $query->bindValue(':src1', $this->img_src, PDO::PARAM_STR);
         $query->bindValue(':position', $this->position, PDO::PARAM_STR);
