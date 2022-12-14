@@ -248,13 +248,23 @@ if ($userinfo['admin'] == 1) {
 				'username' => $userinfo['pseudo'],
 			];
 		break;
+		case 'create_elemnt_balise_audio' :
+			$view = 'element/create_elemnt_balise_audio.twig';
+			$data = [
+				'articles' => $articles_readAll,
+				'create_element' => 'active',
+				'pages' => $pages_readAll,
+				'balise' => $balise,
+				'username' => $userinfo['pseudo'],
+				'image' => $_POST['audio_image'],
+			];
+		break;
 		case 'create_element' :
 			$view = 'element/create_element.twig';
 			$data = [
 				'articles' => $articles_readAll,
 				'create_element' => 'active',
 				'pages' => $pages_readAll,
-				'liaisons_all' => $liaisons_readAll,
 				'username' => $userinfo['pseudo'],
 			];
 		break;
@@ -327,7 +337,7 @@ if ($userinfo['admin'] == 1) {
 							// Insert into Database
 	
 	
-							$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `alt1`, `src1`, `position`, `legende1`, `credit1`, `article`)
+							$sql = '	INSERT INTO `element` (`balise`, `classCSS1`, `alt1`, `src1`, `position`, `legende1`, `credit1`, `article`)
 										VALUES (:balise, :classCSS, :img_alt, :img_src, :position, :legende, :credit, :article);';
 							$pdo = connexion();
 							$query = $pdo->prepare($sql);
@@ -351,7 +361,64 @@ if ($userinfo['admin'] == 1) {
 					header("Location: index.php?error=$em");
 				}
 
-			} elseif(isset($_POST['submit_audio']) && isset($_FILES['my_audio'])) {
+			} elseif(isset($_POST['submit_audio_image']) && isset($_FILES['my_audio']) && isset($_FILES['my_image_audio'])) {
+				$img_name = $_FILES['my_audio']['name'];
+				$img_size = $_FILES['my_audio']['size'];
+				$tmp_name = $_FILES['my_audio']['tmp_name'];
+				$error = $_FILES['my_audio']['error'];
+				$img_name_audio = $_FILES['my_image_audio']['name'];
+				$img_size_audio = $_FILES['my_image_audio']['size'];
+				$tmp_name_audio = $_FILES['my_image_audio']['tmp_name'];
+				$error_audio = $_FILES['my_image_audio']['error'];
+
+				if ($error === 0) {
+					if ($img_size > 12500000) {
+						$em = "Trop gros";
+						header("Location: index.php?error=$em");
+					} else {
+						$img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+						$img_ex_lc = strtolower($img_ex);
+						$allowed_exs = array("mp3");
+						$img_ex_audio = pathinfo($img_name_audio, PATHINFO_EXTENSION);
+						$img_ex_lc_audio = strtolower($img_ex_audio);
+						$allowed_exs_audio = array("jpg", "jpeg", "png", "gif");
+	
+						if (in_array($img_ex_lc_audio, $allowed_exs_audio) AND in_array($img_ex_lc, $allowed_exs)) {
+							$new_img_name = uniqid("AUD-Article-", true) . '.' . $img_ex_lc;
+							$img_upload_path = '../src/Articles/AUDIO/' . $new_img_name;
+							move_uploaded_file($tmp_name, $img_upload_path);
+							$new_img_name_audio = uniqid("IMG-AUDIO-", true) . '.' . $img_ex_lc_audio;
+							$img_upload_path_audio = '../src/Articles/AUDIO/' . $new_img_name_audio;
+							move_uploaded_file($tmp_name_audio, $img_upload_path_audio);
+	
+							// Insert into Database
+	
+	
+							$sql = '	INSERT INTO `element` (`balise`, `classCSS1`,  `src1`, `alt_media1`, `src_media1`, `position`, `legende1`, `credit1`, `article`)
+										VALUES (:balise, :classCSS, :src1, :alt_media1, :src_media1, :position, :legende, :credit, :article);';
+							$pdo = connexion();
+							$query = $pdo->prepare($sql);
+							$query->bindValue(':balise', 'audio_image', PDO::PARAM_STR);
+							$query->bindValue(':classCSS', $_POST['classCSS'], PDO::PARAM_STR);
+							$query->bindValue(':src1', $img_upload_path, PDO::PARAM_STR);
+							$query->bindValue(':alt_media1', $img_name_audio, PDO::PARAM_STR);
+							$query->bindValue(':src_media1', $img_upload_path_audio, PDO::PARAM_STR);
+							$query->bindValue(':legende', $_POST['legende'], PDO::PARAM_STR);
+							$query->bindValue(':credit', $_POST['credit'], PDO::PARAM_STR);
+							$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
+							$query->bindValue(':article', $_POST['article'], PDO::PARAM_STR);
+							$query->execute();
+							header("Location: index.php");
+						} else {
+							$em = "Pas du bon type, faut essayer le type feu";
+							header("Location: index.php?error=$em");
+						}
+					}
+				} else {
+					$em = "unknown error occurred!";
+					header("Location: index.php?error=$em");
+				} 
+			} elseif(isset($_POST['submit_audio']) && isset($_FILES['my_audio'])) { 
 				$img_name = $_FILES['my_audio']['name'];
 				$img_size = $_FILES['my_audio']['size'];
 				$tmp_name = $_FILES['my_audio']['tmp_name'];
@@ -375,7 +442,7 @@ if ($userinfo['admin'] == 1) {
 	
 	
 							$sql = '	INSERT INTO `element` (`balise`, `classCSS`,  `src1`, `position`, `legende1`, `credit1`, `article`)
-										VALUES (:balise, :classCSS, :img_src, :position, :legende, :credit, :article);';
+										VALUES (:balise, :classCSS, :src1, :position, :legende, :credit, :article);';
 							$pdo = connexion();
 							$query = $pdo->prepare($sql);
 							$query->bindValue(':balise', $balise, PDO::PARAM_STR);
@@ -396,7 +463,7 @@ if ($userinfo['admin'] == 1) {
 					$em = "unknown error occurred!";
 					header("Location: index.php?error=$em");
 				} 
-			} elseif (isset($_POST['submit_video']) && isset($_FILES['my_video'])) {
+			} elseif (isset($_POST['submit_video']) && isset($_FILES['my_video']) && isser($_FILES['my_image_video'])) {
 
 
 				echo "<pre>";
@@ -407,6 +474,10 @@ if ($userinfo['admin'] == 1) {
 				$img_size = $_FILES['my_video']['size'];
 				$tmp_name = $_FILES['my_video']['tmp_name'];
 				$error = $_FILES['my_video']['error'];
+				$img_name_minia = $_FILES['my_image_video']['name'];
+				$img_size_minia = $_FILES['my_image_video']['size'];
+				$tmp_name_minia = $_FILES['my_image_video']['tmp_name'];
+				$error_minia = $_FILES['my_image_video']['error'];
 	  
 				if ($error === 0) {
 				  if ($img_size > 12500000) {
@@ -415,23 +486,30 @@ if ($userinfo['admin'] == 1) {
 				  } else {
 					$img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
 					$img_ex_lc = strtolower($img_ex);
-	  
 					$allowed_exs = array("mp4");
+					$img_ex_minia = pathinfo($img_name_minia, PATHINFO_EXTENSION);
+					$img_ex_lc_minia = strtolower($img_ex_minia);
+					$allowed_exs_minia = array("jpg", "jpeg", "png", "gif");
 	  
-					if (in_array($img_ex_lc, $allowed_exs)) {
+					if (in_array($img_ex_lc_minia, $allowed_exs_minia) AND in_array($img_ex_lc, $allowed_exs)) {
 					  $new_img_name = uniqid("VID-Articles-", true) . '.' . $img_ex_lc;
 					  $img_upload_path = '../src/Articles/VIDEO/' . $new_img_name;
 					  move_uploaded_file($tmp_name, $img_upload_path);
+					  $new_img_name_minia = uniqid("IMG-VIDEO-", true) . '.' . $img_ex_lc_minia;
+					  $img_upload_path_minia = '../src/Articles/VIDEO/' . $new_img_name_minia;
+					  move_uploaded_file($tmp_name_minia, $img_upload_path_minia);
 	  
 					  // Insert into Database
 	  
-						$sql = '	INSERT INTO `element` (`balise`, `classCSS`,  `src1`, `position`, `legende1`, `credit1`, `article`)
-									VALUES (:balise, :classCSS, :img_src, :position, :legende, :credit, :article);';
+						$sql = '	INSERT INTO `element` (`balise`, `classCSS`,  `src1`, `alt_media1`, `src_media1`, `position`, `legende1`, `credit1`, `article`)
+									VALUES (:balise, :classCSS, :src1, :alt_media1, :src_media1, :position, :legende, :credit, :article);';
 						$pdo = connexion();
 						$query = $pdo->prepare($sql);
 						$query->bindValue(':balise', $balise, PDO::PARAM_STR);
 						$query->bindValue(':classCSS', $_POST['classCSS'], PDO::PARAM_STR);
-						$query->bindValue(':src2', $img_upload_path, PDO::PARAM_STR);
+						$query->bindValue(':src1', $img_upload_path, PDO::PARAM_STR);
+						$query->bindValue(':alt_media1', $img_name_minia, PDO::PARAM_STR);
+						$query->bindValue(':src_media1', $img_upload_path_minia, PDO::PARAM_STR);
 						$query->bindValue(':legende', $_POST['legende'], PDO::PARAM_STR);
 						$query->bindValue(':credit', $_POST['credit'], PDO::PARAM_STR);
 						$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
@@ -486,12 +564,13 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `alt1`, `src1`, `alt2`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
-											VALUES (:balise, :classCSS, :alt1, :src1, :alt2, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS1`, `classCSS2`, `alt1`, `src1`, `alt2`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS1, :classCSS2, :alt1, :src1, :alt2, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'img_img', PDO::PARAM_STR);
-								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
+								$query->bindValue(':classCSS1', $_POST['classCSS1'], PDO::PARAM_STR);
+								$query->bindValue(':classCSS2', $_POST['classCSS2'], PDO::PARAM_STR);
 								$query->bindValue(':alt1', $img_name1, PDO::PARAM_STR);
 								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
 								$query->bindValue(':alt2', $img_name2, PDO::PARAM_STR);
@@ -522,6 +601,10 @@ if ($userinfo['admin'] == 1) {
 					$img_size2 = $_FILES['my_video2']['size'];
 					$tmp_name2 = $_FILES['my_video2']['tmp_name'];
 					$error2 = $_FILES['my_video2']['error'];
+					$img_name2_video = $_FILES['my_image_video2']['name'];
+					$img_size2_video = $_FILES['my_image_video2']['size'];
+					$tmp_name2_video = $_FILES['my_image_video2']['tmp_name'];
+					$error2_video = $_FILES['my_image_video2']['error'];
 
 					if ($error1 === 0 AND $error2 === 0) {
 						if ($img_size1 > 12500000 AND $img_size2 > 12500000) {
@@ -534,27 +617,35 @@ if ($userinfo['admin'] == 1) {
 							$img_ex2 = pathinfo($img_name2, PATHINFO_EXTENSION);
 							$img_ex_lc2 = strtolower($img_ex2);
 							$allowed_exs2 = array("mp4");
+							$img_ex2_video = pathinfo($img_name2_video, PATHINFO_EXTENSION);
+							$img_ex_lc2_video = strtolower($img_ex2_video);
+							$allowed_exs2_video = array("jpg", "jpeg", "png", "gif");
 		
-							if (in_array($img_ex_lc1, $allowed_exs1) AND in_array($img_ex_lc2, $allowed_exs2)) {
+							if (in_array($img_ex_lc1, $allowed_exs1) AND in_array($img_ex_lc2, $allowed_exs2) AND in_array($img_ex_lc2_video, $allowed_exs2_video)) {
 								$new_img_name1 = uniqid("IMG-Article-", true) . '.' . $img_ex_lc1;
 								$img_upload_path1 = '../src/Articles/IMG/' . $new_img_name1;
 								move_uploaded_file($tmp_name1, $img_upload_path1);
 								$new_img_name2 = uniqid("VID-Article-", true) . '.' . $img_ex_lc2;
 								$img_upload_path2 = '../src/Articles/VIDEO/' . $new_img_name2;
 								move_uploaded_file($tmp_name2, $img_upload_path2);
+								$new_img_name2_video = uniqid("IMG_VIDEO-", true) . '.' . $img_ex_lc2_video;
+								$img_upload_path2_video = '../src/Articles/VIDEO/' . $new_img_name2_video;
+								move_uploaded_file($tmp_name2_video, $img_upload_path2_video);
 		
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `alt1`, `src1`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`, `liaison`)
-											VALUES (:balise, :classCSS, :alt1, :src1, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article, :liaison);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS1`, `alt1`, `src1`, `src2`, `alt_media2`, `src_media2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`, `liaison`)
+											VALUES (:balise, `classCSS1`, :alt1, :src1, :src2, :alt_media2, :src_media2, :position, :legende1, :credit1, :legende2, :credit2, :article, :liaison);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'img_video', PDO::PARAM_STR);
-								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
+								$query->bindValue(':classCSS1', $_POST['classCSS1'], PDO::PARAM_STR);
 								$query->bindValue(':alt1', $img_name1, PDO::PARAM_STR);
 								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
 								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':alt_media2', $img_name2_video, PDO::PARAM_STR);
+								$query->bindValue(':src_media2', $img_upload_path2_video, PDO::PARAM_STR);
 								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
 								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
 								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
@@ -605,12 +696,142 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `alt1`, `src1`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`, `liaison`)
-											VALUES (:balise, :classCSS, :alt1, :src1, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS1`, `alt1`, `src1`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`, `liaison`)
+											VALUES (:balise, :classCSS1, :alt1, :src1, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'img_audio', PDO::PARAM_STR);
-								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
+								$query->bindValue(':classCSS1', $_POST['classCSS1'], PDO::PARAM_STR);
+								$query->bindValue(':alt1', $img_name1, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
+								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
+								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
+								$query->bindValue(':credit2', $_POST['credit2'], PDO::PARAM_STR);
+								$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
+								$query->bindValue(':article', $_POST['article'], PDO::PARAM_STR);
+								$query->execute();
+								header("Location: index.php");
+							} else {
+								$em = "Pas du bon type, faut essayer le type feu";
+								header("Location: index.php?error=$em");
+							}
+						}
+					} else {
+						$em = "unknown error occurred!";
+						header("Location: index.php?error=$em");
+					}
+				} elseif($element1 == 'img' AND $element2 == 'audio_image') {
+					$img_name1 = $_FILES['my_image1']['name'];
+					$img_size1 = $_FILES['my_image1']['size'];
+					$tmp_name1 = $_FILES['my_image1']['tmp_name'];
+					$error1 = $_FILES['my_image1']['error'];
+					$img_name2 = $_FILES['my_audio2']['name'];
+					$img_size2 = $_FILES['my_audio2']['size'];
+					$tmp_name2 = $_FILES['my_audio2']['tmp_name'];
+					$error2 = $_FILES['my_audio2']['error'];
+					$img_name2_audio = $_FILES['my_image2_audio']['name'];
+					$img_size2_audio = $_FILES['my_image2_audio']['size'];
+					$tmp_name2_audio = $_FILES['my_image2_audio']['tmp_name'];
+					$error2_audio = $_FILES['my_image2_audio']['error'];
+					
+					if ($erreur1 === 0 AND $error2 === 0) {
+						if ($img_size1 > 12500000 AND $img_size2 > 12500000) {
+							$em = "Trop gros";
+							header("Location: index.php?error=$em");
+						} else {
+							$img_ex1 = pathinfo($img_name1, PATHINFO_EXTENSION);
+							$img_ex_lc1 = strtolower($img_ex1);
+							$allowed_exs1 = array("jpg", "jpeg", "png", "gif");
+							$img_ex2 = pathinfo($img_name2, PATHINFO_EXTENSION);
+							$img_ex_lc2 = strtolower($img_ex2);
+							$allowed_exs2 = array("mp3");
+							$img_ex2_audio = pathinfo($img_name2_audio, PATHINFO_EXTENSION);
+							$img_ex_lc2_audio = strtolower($img_ex2_audio);
+							$allowed_exs2_audio = array("jpg", "jpeg", "png", "gif");
+							
+							if (in_array($img_ex_lc1, $allowed_exs1) AND in_array($img_ex_lc2, $allowed_exs2) AND in_array($img_ex_lc2_audio, $allowed_exs2_audio)) {
+								$new_img_name1 = uniqid("IMG-Article-", true) . '.' . $img_ex_lc1;
+								$img_upload_path1 = '../src/Articles/IMG/' . $new_img_name1;
+								move_uploaded_file($tmp_name1, $img_upload_path1);
+								$new_img_name2 = uniqid("AUD-Article-", true) . '.' . $img_ex_lc2;
+								$img_upload_path2 = '../src/Articles/AUDIO/' . $new_img_name2;
+								move_uploaded_file($tmp_name2, $img_upload_path2);
+								$new_img_name2_audio = uniqid("IMG-AUDIO-", true) . '.' . $img_ex_lc2_audio;
+								$img_upload_path2_audio = '../src/Articles/AUDIO/' . $new_img_name2_audio;
+								move_uploaded_file($tmp_name2_audio, $img_upload_path2_audio);
+		
+								// Insert into Database
+		
+		
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS1`, `alt1`, `src1`, `src2`, `alt_media2`, `src_media2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`, `liaison`)
+											VALUES (:balise, :classCSS1, :alt1, :src1, :src2, :alt_media2, :src_media2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$pdo = connexion();
+								$query = $pdo->prepare($sql);
+								$query->bindValue(':balise', 'img_audio', PDO::PARAM_STR);
+								$query->bindValue(':classCSS1', $_POST['classCSS1'], PDO::PARAM_STR);
+								$query->bindValue(':alt1', $img_name1, PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':alt_media2', $img_name2_audio, PDO::PARAM_STR);
+								$query->bindValue(':src_media2', $img_upload_path2_audio, PDO::PARAM_STR);
+								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
+								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
+								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
+								$query->bindValue(':credit2', $_POST['credit2'], PDO::PARAM_STR);
+								$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
+								$query->bindValue(':article', $_POST['article'], PDO::PARAM_STR);
+								$query->execute();
+								header("Location: index.php");
+							} else {
+								$em = "Pas du bon type, faut essayer le type feu";
+								header("Location: index.php?error=$em");
+							}
+						}
+					} else {
+						$em = "unknown error occurred!";
+						header("Location: index.php?error=$em");
+					}
+				} elseif($element1 == 'img' AND $element2 == 'audio') {
+					$img_name1 = $_FILES['my_image1']['name'];
+					$img_size1 = $_FILES['my_image1']['size'];
+					$tmp_name1 = $_FILES['my_image1']['tmp_name'];
+					$error1 = $_FILES['my_image1']['error'];
+					$img_name2 = $_FILES['my_audio2']['name'];
+					$img_size2 = $_FILES['my_audio2']['size'];
+					$tmp_name2 = $_FILES['my_audio2']['tmp_name'];
+					$error2 = $_FILES['my_audio2']['error'];
+
+					if ($erreur1 === 0 AND $error2 === 0) {
+						if ($img_size1 > 12500000 AND $img_size2 > 12500000) {
+							$em = "Trop gros";
+							header("Location: index.php?error=$em");
+						} else {
+							$img_ex1 = pathinfo($img_name1, PATHINFO_EXTENSION);
+							$img_ex_lc1 = strtolower($img_ex1);
+							$allowed_exs1 = array("jpg", "jpeg", "png", "gif");
+							$img_ex2 = pathinfo($img_name2, PATHINFO_EXTENSION);
+							$img_ex_lc2 = strtolower($img_ex2);
+							$allowed_exs2 = array("mp3");
+		
+							if (in_array($img_ex_lc1, $allowed_exs1) AND in_array($img_ex_lc2, $allowed_exs2)) {
+								$new_img_name1 = uniqid("IMG-Article-", true) . '.' . $img_ex_lc1;
+								$img_upload_path1 = '../src/Articles/IMG/' . $new_img_name1;
+								move_uploaded_file($tmp_name1, $img_upload_path1);
+								$new_img_name2 = uniqid("AUD-Article-", true) . '.' . $img_ex_lc2;
+								$img_upload_path2 = '../src/Articles/AUDIO/' . $new_img_name2;
+								move_uploaded_file($tmp_name2, $img_upload_path2);
+		
+								// Insert into Database
+		
+		
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS1`, `alt1`, `src1`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`, `liaison`)
+											VALUES (:balise, :classCSS1, :alt1, :src1, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$pdo = connexion();
+								$query = $pdo->prepare($sql);
+								$query->bindValue(':balise', 'img_audio', PDO::PARAM_STR);
+								$query->bindValue(':classCSS1', $_POST['classCSS1'], PDO::PARAM_STR);
 								$query->bindValue(':alt1', $img_name1, PDO::PARAM_STR);
 								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
 								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
@@ -636,6 +857,10 @@ if ($userinfo['admin'] == 1) {
 					$img_size1 = $_FILES['my_video1']['size'];
 					$tmp_name1 = $_FILES['my_video1']['tmp_name'];
 					$error1 = $_FILES['my_video1']['error'];
+					$img_name1_video = $_FILES['my_image1_video']['name'];
+					$img_size1_video = $_FILES['my_image1_video']['size'];
+					$tmp_name1_video = $_FILES['my_image1_video']['tmp_name'];
+					$error1_video = $_FILES['my_image1_video']['error'];
 					$img_name2 = $_FILES['my_image2']['name'];
 					$img_size2 = $_FILES['my_image2']['size'];
 					$tmp_name2 = $_FILES['my_image2']['tmp_name'];
@@ -664,12 +889,12 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `alt2`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
-											VALUES (:balise, :classCSS, :src1, :alt2, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS2`, `src1`, `alt2`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS2, :src1, :alt2, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'video_img', PDO::PARAM_STR);
-								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
+								$query->bindValue(':classCSS2', $_POST['classCSS2'], PDO::PARAM_STR);
 								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
 								$query->bindValue(':alt2', $img_name2, PDO::PARAM_STR);
 								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
@@ -806,6 +1031,76 @@ if ($userinfo['admin'] == 1) {
 						$em = "unknown error occurred!";
 						header("Location: index.php?error=$em");
 					}
+				} elseif($element1 == 'video' AND $element2 == 'audio_image') {
+					$img_name1 = $_FILES['my_video1']['name'];
+					$img_size1 = $_FILES['my_video1']['size'];
+					$tmp_name1 = $_FILES['my_video1']['tmp_name'];
+					$error1 = $_FILES['my_video1']['error'];
+					$img_name2 = $_FILES['my_audio2']['name'];
+					$img_size2 = $_FILES['my_audio2']['size'];
+					$tmp_name2 = $_FILES['my_audio2']['tmp_name'];
+					$error2 = $_FILES['my_audio2']['error'];
+					$img_name2_audio = $_FILES['my_image2_audio']['name'];
+					$img_size2_audio = $_FILES['my_image2_audio']['size'];
+					$tmp_name2_audio = $_FILES['my_image2_audio']['tmp_name'];
+					$error2_audio = $_FILES['my_image2_audio']['error'];
+
+					if ($error1 === 0 AND $error2 === 0) {
+						if ($img_size1 > 12500000 AND $img_size2 > 12500000) {
+							$em = "Trop gros";
+							header("Location: index.php?error=$em");
+						} else {
+							$img_ex1 = pathinfo($img_name1, PATHINFO_EXTENSION);
+							$img_ex_lc1 = strtolower($img_ex1);
+							$allowed_exs1 = array("mp4");
+							$img_ex2 = pathinfo($img_name2, PATHINFO_EXTENSION);
+							$img_ex_lc2 = strtolower($img_ex2);
+							$allowed_exs2 = array("mp3");
+							$img_ex2_audio = pathinfo($img_name2_audio, PATHINFO_EXTENSION);
+							$img_ex_lc2_audio = strtolower($img_ex2_audio);
+							$allowed_exs2_audio = array("jpg", "jpeg", "png", "gif");
+		
+							if (in_array($img_ex_lc1, $allowed_exs1) AND in_array($img_ex_lc2, $allowed_exs2)) {
+								$new_img_name1 = uniqid("VID-Article-", true) . '.' . $img_ex_lc1;
+								$img_upload_path1 = '../src/Articles/VIDEO/' . $new_img_name1;
+								move_uploaded_file($tmp_name1, $img_upload_path1);
+								$new_img_name2 = uniqid("AUD-Article-", true) . '.' . $img_ex_lc2;
+								$img_upload_path2 = '../src/Articles/AUDIO/' . $new_img_name2;
+								move_uploaded_file($tmp_name2, $img_upload_path2);
+								$new_img_name2_audio = uniqid("IMG-AUDIO-", true) . '.' . $img_ex_lc2_audio;
+								$img_upload_path2_audio = '../src/Articles/AUDIO/' . $new_img_name2_audio;
+								move_uploaded_file($tmp_name2_audio, $img_upload_path2_audio);
+		
+								// Insert into Database
+		
+		
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `src2`, `alt_media2`, `src_media2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :src1, :src2, :alt_media2, :src_media2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$pdo = connexion();
+								$query = $pdo->prepare($sql);
+								$query->bindValue(':balise', 'video_audio', PDO::PARAM_STR);
+								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':alt_media2', $img_name2_audio, PDO::PARAM_STR);
+								$query->bindValue(':src_media2', $img_upload_path2_audio, PDO::PARAM_STR);
+								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
+								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
+								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
+								$query->bindValue(':credit2', $_POST['credit2'], PDO::PARAM_STR);
+								$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
+								$query->bindValue(':article', $_POST['article'], PDO::PARAM_STR);
+								$query->execute();
+								header("Location: index.php");
+							} else {
+								$em = "Pas du bon type, faut essayer le type feu";
+								header("Location: index.php?error=$em");
+							}
+						}
+					} else {
+						$em = "unknown error occurred!";
+						header("Location: index.php?error=$em");
+					}
 				} elseif($element1 == 'audio' AND $element2 == 'img') {
 					$img_name1 = $_FILES['my_audio1']['name'];
 					$img_size1 = $_FILES['my_audio1']['size'];
@@ -839,12 +1134,12 @@ if ($userinfo['admin'] == 1) {
 								// Insert into Database
 		
 		
-								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `alt2`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
-											VALUES (:balise, :classCSS, :src1, :alt2, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS2`, `src1`, `alt2`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS2, :src1, :alt2, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
 								$pdo = connexion();
 								$query = $pdo->prepare($sql);
 								$query->bindValue(':balise', 'audio_img', PDO::PARAM_STR);
-								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
+								$query->bindValue(':classCSS2', $_POST['classCSS2'], PDO::PARAM_STR);
 								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
 								$query->bindValue(':alt2', $img_name2, PDO::PARAM_STR);
 								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
@@ -964,6 +1259,299 @@ if ($userinfo['admin'] == 1) {
 								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
 								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
 								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
+								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
+								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
+								$query->bindValue(':credit2', $_POST['credit2'], PDO::PARAM_STR);
+								$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
+								$query->bindValue(':article', $_POST['article'], PDO::PARAM_STR);
+								$query->execute();
+								header("Location: index.php");
+							} else {
+								$em = "Pas du bon type, faut essayer le type feu";
+								header("Location: index.php?error=$em");
+							}
+						}
+					} else {
+						$em = "unknown error occurred!";
+						header("Location: index.php?error=$em");
+					}
+				} elseif($element1 == 'audio_image' AND $element2 == 'img') {
+					$img_name1 = $_FILES['my_audio1']['name'];
+					$img_size1 = $_FILES['my_audio1']['size'];
+					$tmp_name1 = $_FILES['my_audio1']['tmp_name'];
+					$error1 = $_FILES['my_audio1']['error'];
+					$img_name1_audio = $_FILES['my_image1_audio']['name'];
+					$img_size1_audio = $_FILES['my_image1_audio']['size'];
+					$tmp_name1_audio = $_FILES['my_image1_audio']['tmp_name'];
+					$error1_audio = $_FILES['my_image1_audio']['error'];
+					$img_name2 = $_FILES['my_image2']['name'];
+					$img_size2 = $_FILES['my_image2']['size'];
+					$tmp_name2 = $_FILES['my_image2']['tmp_name'];
+					$error2 = $_FILES['my_image2']['error'];
+
+					if ($error1 === 0 AND $error2 === 0) {
+						if ($img_size1 > 12500000 AND $img_size2 > 12500000) {
+							$em = "Trop gros";
+							header("Location: index.php?error=$em");
+						} else {
+							$img_ex1 = pathinfo($img_name1, PATHINFO_EXTENSION);
+							$img_ex_lc1 = strtolower($img_ex1);
+							$allowed_exs1 = array("mp3");
+							$img_ex1_audio = pathinfo($img_name1_audio, PATHINFO_EXTENSION);
+							$img_ex_lc1_audio = strtolower($img_ex1_audio);
+							$allowed_exs1_audio = array("jpg", "jpeg", "png", "gif");
+							$img_ex2 = pathinfo($img_name2, PATHINFO_EXTENSION);
+							$img_ex_lc2 = strtolower($img_ex2);
+							$allowed_exs2 = array("jpg", "jpeg", "png", "gif");
+		
+							if (in_array($img_ex_lc1, $allowed_exs1) AND in_array($img_ex_lc1_audio, $allowed_exs1_audio) AND in_array($img_ex_lc2, $allowed_exs2)) {
+								$new_img_name1 = uniqid("AUD-Article-", true) . '.' . $img_ex_lc1;
+								$img_upload_path1 = '../src/Articles/AUDIO/' . $new_img_name1;
+								move_uploaded_file($tmp_name1, $img_upload_path1);
+								$new_img_name1_audio = uniqid("IMG-AUDIO-", true) . '.' . $img_ex_lc1_audio;
+								$img_upload_path1_audio = '../src/Articles/AUDIO/' . $new_img_name1_audio;
+								move_uploaded_file($tmp_name1_audio, $img_upload_path1_audio);
+								$new_img_name2 = uniqid("IMG-Article-", true) . '.' . $img_ex_lc2;
+								$img_upload_path2 = '../src/Articles/IMG/' . $new_img_name2;
+								move_uploaded_file($tmp_name2, $img_upload_path2);
+		
+								// Insert into Database
+		
+		
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS2`, `src1`, `alt2`, `src2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS2, :src1, :alt2, :src2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$pdo = connexion();
+								$query = $pdo->prepare($sql);
+								$query->bindValue(':balise', 'audio_img', PDO::PARAM_STR);
+								$query->bindValue(':classCSS2', $_POST['classCSS2'], PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':alt2', $img_name2, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':alt_media1', $img_name1_audio, PDO::PARAM_STR);
+								$query->bindValue(':src_media1', $img_upload_path1_audio, PDO::PARAM_STR);
+								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
+								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
+								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
+								$query->bindValue(':credit2', $_POST['credit2'], PDO::PARAM_STR);
+								$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
+								$query->bindValue(':article', $_POST['article'], PDO::PARAM_STR);
+								$query->execute();
+								header("Location: index.php");
+							} else {
+								$em = "Pas du bon type, faut essayer le type feu";
+								header("Location: index.php?error=$em");
+							}
+						}
+					} else {
+						$em = "unknown error occurred!";
+						header("Location: index.php?error=$em");
+					}
+				} elseif($element1 == 'audio_image' AND $element2 == 'video') {
+					$img_name1 = $_FILES['my_audio1']['name'];
+					$img_size1 = $_FILES['my_audio1']['size'];
+					$tmp_name1 = $_FILES['my_audio1']['tmp_name'];
+					$error1 = $_FILES['my_audio1']['error'];
+					$img_name1_audio = $_FILES['my_image1_audio']['name'];
+					$img_size1_audio = $_FILES['my_image1_audio']['size'];
+					$tmp_name1_audio = $_FILES['my_image1_audio']['tmp_name'];
+					$error1_audio = $_FILES['my_image1_audio']['error'];
+					$img_name2 = $_FILES['my_video2']['name'];
+					$img_size2 = $_FILES['my_video2']['size'];
+					$tmp_name2 = $_FILES['my_video2']['tmp_name'];
+					$error2 = $_FILES['my_video2']['error'];
+
+					if ($error1 === 0 AND $error2 === 0) {
+						if ($img_size1 > 12500000 AND $img_size2 > 12500000) {
+							$em = "Trop gros";
+							header("Location: index.php?error=$em");
+						} else {
+							$img_ex1 = pathinfo($img_name1, PATHINFO_EXTENSION);
+							$img_ex_lc1 = strtolower($img_ex1);
+							$allowed_exs1 = array("mp3");
+							$img_ex1_audio = pathinfo($img_name1_audio, PATHINFO_EXTENSION);
+							$img_ex_lc1_audio = strtolower($img_ex1_audio);
+							$allowed_exs1_audio = array("jpg", "jpeg", "png", "gif");
+							$img_ex2 = pathinfo($img_name2, PATHINFO_EXTENSION);
+							$img_ex_lc2 = strtolower($img_ex2);
+							$allowed_exs2 = array("mp4");
+		
+							if (in_array($img_ex_lc1, $allowed_exs1) AND in_array($img_ex_lc1_audio, $allowed_exs1_audio) AND in_array($img_ex_lc2, $allowed_exs2)) {
+								$new_img_name1 = uniqid("AUD-Article-", true) . '.' . $img_ex_lc1;
+								$img_upload_path1 = '../src/Articles/AUDIO/' . $new_img_name1;
+								move_uploaded_file($tmp_name1, $img_upload_path1);
+								$new_img_name1_audio = uniqid("IMG-AUDIO-", true) . '.' . $img_ex_lc1_audio;
+								$img_upload_path1_audio = '../src/Articles/AUDIO/' . $new_img_name1_audio;
+								move_uploaded_file($tmp_name1_audio, $img_upload_path1_audio);
+								$new_img_name2 = uniqid("VID-Article-", true) . '.' . $img_ex_lc2;
+								$img_upload_path2 = '../src/Articles/VIDEO/' . $new_img_name2;
+								move_uploaded_file($tmp_name2, $img_upload_path2);
+		
+								// Insert into Database
+		
+		
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `src2`, `alt_media1`, `src_media1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :src1, :src2, :alt_media1 :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$pdo = connexion();
+								$query = $pdo->prepare($sql);
+								$query->bindValue(':balise', 'audio_video', PDO::PARAM_STR);
+								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':alt_media1', $img_name1_audio, PDO::PARAM_STR);
+								$query->bindValue(':src_media1', $img_upload_path1_audio, PDO::PARAM_STR);
+								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
+								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
+								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
+								$query->bindValue(':credit2', $_POST['credit2'], PDO::PARAM_STR);
+								$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
+								$query->bindValue(':article', $_POST['article'], PDO::PARAM_STR);
+								$query->execute();
+								header("Location: index.php");
+							} else {
+								$em = "Pas du bon type, faut essayer le type feu";
+								header("Location: index.php?error=$em");
+							}
+						}
+					} else {
+						$em = "unknown error occurred!";
+						header("Location: index.php?error=$em");
+					}
+				} elseif($element1 == 'audio_image' AND $element2 == 'audio') {
+					$img_name1 = $_FILES['my_audio1']['name'];
+					$img_size1 = $_FILES['my_audio1']['size'];
+					$tmp_name1 = $_FILES['my_audio1']['tmp_name'];
+					$error1 = $_FILES['my_audio1']['error'];
+					$img_name1_audio = $_FILES['my_image1_audio']['name'];
+					$img_size1_audio = $_FILES['my_image1_audio']['size'];
+					$tmp_name1_audio = $_FILES['my_image1_audio']['tmp_name'];
+					$error1_audio = $_FILES['my_image1_audio']['error'];
+					$img_name2 = $_FILES['my_audio2']['name'];
+					$img_size2 = $_FILES['my_audio2']['size'];
+					$tmp_name2 = $_FILES['my_audio2']['tmp_name'];
+					$error2 = $_FILES['my_audio2']['error'];
+
+					if ($error1 === 0 AND $error2 === 0) {
+						if ($img_size1 > 12500000 AND $img_size2 > 12500000) {
+							$em = "Trop gros";
+							header("Location: index.php?error=$em");
+						} else {
+							$img_ex1 = pathinfo($img_name1, PATHINFO_EXTENSION);
+							$img_ex_lc1 = strtolower($img_ex1);
+							$allowed_exs1 = array("mp3");
+							$img_ex1_audio = pathinfo($img_name1_audio, PATHINFO_EXTENSION);
+							$img_ex_lc1_audio = strtolower($img_ex1_audio);
+							$allowed_exs1_audio = array("jpg", "jpeg", "png", "gif");
+							$img_ex2 = pathinfo($img_name2, PATHINFO_EXTENSION);
+							$img_ex_lc2 = strtolower($img_ex2);
+							$allowed_exs2 = array("mp3");
+		
+							if (in_array($img_ex_lc1, $allowed_exs1) AND in_array($img_ex_lc2, $allowed_exs2)) {
+								$new_img_name1 = uniqid("AUD-Article-", true) . '.' . $img_ex_lc1;
+								$img_upload_path1 = '../src/Articles/AUDIO/' . $new_img_name1;
+								move_uploaded_file($tmp_name1, $img_upload_path1);
+								$new_img_name1_audio = uniqid("IMG-AUDIO-", true) . '.' . $img_ex_lc1_audio;
+								$img_upload_path1_audio = '../src/Articles/AUDIO/' . $new_img_name1_audio;
+								move_uploaded_file($tmp_name1_audio, $img_upload_path1_audio);
+								$new_img_name2 = uniqid("AUD-Article-", true) . '.' . $img_ex_lc2;
+								$img_upload_path2 = '../src/Articles/AUDIO/' . $new_img_name2;
+								move_uploaded_file($tmp_name2, $img_upload_path2);
+		
+								// Insert into Database
+		
+		
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `src2`, `alt_media1`, `src_media1`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :src1, :src2, :alt_media1, :src_media1, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$pdo = connexion();
+								$query = $pdo->prepare($sql);
+								$query->bindValue(':balise', 'audio_image_audio', PDO::PARAM_STR);
+								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':alt_media1', $img_name1_audio, PDO::PARAM_STR);
+								$query->bindValue(':src_media1', $img_upload_path1_audio, PDO::PARAM_STR);
+								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
+								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
+								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);
+								$query->bindValue(':credit2', $_POST['credit2'], PDO::PARAM_STR);
+								$query->bindValue(':position', $_POST['position'], PDO::PARAM_STR);
+								$query->bindValue(':article', $_POST['article'], PDO::PARAM_STR);
+								$query->execute();
+								header("Location: index.php");
+							} else {
+								$em = "Pas du bon type, faut essayer le type feu";
+								header("Location: index.php?error=$em");
+							}
+						}
+					} else {
+						$em = "unknown error occurred!";
+						header("Location: index.php?error=$em");
+					}
+				} elseif($element1 == 'audio_image' AND $element2 == 'audio_image') {
+					$img_name1 = $_FILES['my_audio1']['name'];
+					$img_size1 = $_FILES['my_audio1']['size'];
+					$tmp_name1 = $_FILES['my_audio1']['tmp_name'];
+					$error1 = $_FILES['my_audio1']['error'];
+					$img_name1_audio = $_FILES['my_image1_audio']['name'];
+					$img_size1_audio = $_FILES['my_image1_audio']['size'];
+					$tmp_name1_audio = $_FILES['my_image1_audio']['tmp_name'];
+					$error1_audio = $_FILES['my_image1_audio']['error'];
+					$img_name2 = $_FILES['my_audio2']['name'];
+					$img_size2 = $_FILES['my_audio2']['size'];
+					$tmp_name2 = $_FILES['my_audio2']['tmp_name'];
+					$error2 = $_FILES['my_audio2']['error'];
+					$img_name2_audio = $_FILES['my_image2_audio']['name'];
+					$img_size2_audio = $_FILES['my_image2_audio']['size'];
+					$tmp_name2_audio = $_FILES['my_image2_audio']['tmp_name'];
+					$error2_audio = $_FILES['my_image2_audio']['error'];
+					
+					if ($error1 === 0 AND $error2 === 0) {
+						if ($img_size1 > 12500000 AND $img_size2 > 12500000) {
+							$em = "Trop gros";
+							header("Location: index.php?error=$em");
+						} else {
+							$img_ex1 = pathinfo($img_name1, PATHINFO_EXTENSION);
+							$img_ex_lc1 = strtolower($img_ex1);
+							$allowed_exs1 = array("mp3");
+							$img_ex1_audio = pathinfo($img_name1_audio, PATHINFO_EXTENSION);
+							$img_ex_lc1_audio = strtolower($img_ex1_audio);
+							$allowed_exs1_audio = array("jpg", "jpeg", "png", "gif");
+							$img_ex2 = pathinfo($img_name2, PATHINFO_EXTENSION);
+							$img_ex_lc2 = strtolower($img_ex2);
+							$allowed_exs2 = array("mp3");
+							$img_ex2_audio = pathinfo($img_name2_audio, PATHINFO_EXTENSION);
+							$img_ex_lc2_audio = strtolower($img_ex2_audio);
+							$allowed_exs2_audio = array("jpg", "jpeg", "png", "gif");
+		
+							if (in_array($img_ex_lc1, $allowed_exs1) AND in_array($img_ex_lc2, $allowed_exs2)) {
+								$new_img_name1 = uniqid("AUD-Article-", true) . '.' . $img_ex_lc1;
+								$img_upload_path1 = '../src/Articles/AUDIO/' . $new_img_name1;
+								move_uploaded_file($tmp_name1, $img_upload_path1);
+								$new_img_name1_audio = uniqid("IMG-AUDIO-", true) . '.' . $img_ex_lc1_audio;
+								$img_upload_path1_audio = '../src/Articles/AUDIO/' . $new_img_name1_audio;
+								move_uploaded_file($tmp_name1_audio, $img_upload_path1_audio);
+								$new_img_name2 = uniqid("AUD-Article-", true) . '.' . $img_ex_lc2;
+								$img_upload_path2 = '../src/Articles/AUDIO/' . $new_img_name2;
+								move_uploaded_file($tmp_name2, $img_upload_path2);
+								$new_img_name2_audio = uniqid("IMG-AUDIO-", true) . '.' . $img_ex_lc2_audio;
+								$img_upload_path2_audio = '../src/Articles/AUDIO/' . $new_img_name2_audio;
+								move_uploaded_file($tmp_name2_audio, $img_upload_path2_audio);
+		
+								// Insert into Database
+		
+		
+								$sql = '	INSERT INTO `element` (`balise`, `classCSS`, `src1`, `src2`, `alt_media1`, `src_media1`, `alt_media2`, `src_media2`, `position`, `legende1`, `credit1`, `legende2`, `credit2`, `article`)
+											VALUES (:balise, :classCSS, :src1, :src2, :alt_media1, :src_media1, :alt_media2, :src_media2, :position, :legende1, :credit1, :legende2, :credit2, :article);';
+								$pdo = connexion();
+								$query = $pdo->prepare($sql);
+								$query->bindValue(':balise', 'audio_image_audio_image', PDO::PARAM_STR);
+								$query->bindValue(':classCSS', '', PDO::PARAM_STR);
+								$query->bindValue(':src1', $img_upload_path1, PDO::PARAM_STR);
+								$query->bindValue(':src2', $img_upload_path2, PDO::PARAM_STR);
+								$query->bindValue(':alt_media1', $img_name1_audio, PDO::PARAM_STR);
+								$query->bindValue(':src_media1', $img_upload_path1_audio, PDO::PARAM_STR);
+								$query->bindValue(':alt_media2', $img_name2_audio, PDO::PARAM_STR);
+								$query->bindValue(':src_media2', $img_upload_path2_audio, PDO::PARAM_STR);
 								$query->bindValue(':legende1', $_POST['legende1'], PDO::PARAM_STR);
 								$query->bindValue(':credit1', $_POST['credit1'], PDO::PARAM_STR);
 								$query->bindValue(':legende2', $_POST['legende2'], PDO::PARAM_STR);

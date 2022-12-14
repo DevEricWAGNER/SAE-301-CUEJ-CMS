@@ -39,8 +39,8 @@ class Element {
         } else {
           $this->content = '';
         }
-        if (isset($_POST['classCSS'])) {
-          $this->classCSS = $_POST['classCSS'];
+        if (isset($_POST['classCSS1'])) {
+          $this->classCSS = $_POST['classCSS1'];
         } else {
           $this->classCSS = '';
         }
@@ -111,7 +111,7 @@ class Element {
       }
 
       function create() {
-        $sql = 'INSERT INTO `element` (`balise`, `classCSS`, `content`, `alt1`, `src1`, `position`, `article`) VALUES (:balise, :classCSS, :content, :alt1, :src1, :position, :article);';
+        $sql = 'INSERT INTO `element` (`balise`, `classCSS1`, `content`, `alt1`, `src1`, `position`, `article`) VALUES (:balise, :classCSS, :content, :alt1, :src1, :position, :article);';
         $pdo = connexion();
         $query = $pdo->prepare($sql);
         $query->bindValue(':balise', $this->balise, PDO::PARAM_STR);

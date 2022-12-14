@@ -8,10 +8,12 @@
                     <div class="form_form">
                         <select name="classCSS" id="classCSS" class="form_input">
                             <option value="">--- Choisissez un style ---</option>
-                            <option value="img_left">Alignée à Gauche</option>
-                            <option value="img_right">Alignée à Droite</option>
-                            <option value="img_center">Alignée à Centre</option>
-                            <option value="full_size">Toute le largeur de la page</option>
+                            <option value="flot-left modal">A gauche du texte avec Trigger</option>
+                            <option value="float-right modal">A droite du texte avec Trigger</option>
+                            <option value="modal">Seule avec Trigger</option>
+                            <option value="flot-left">A gauche du texte sans Trigger</option>
+                            <option value="float-right">A droite du texte sans Trigger</option>
+                            <option value="">Seule sans Trigger</option>
                         </select>
                         <div class="form_input" id="InputFile">
                             <label for="imgInp">
@@ -37,30 +39,13 @@
         </form>
 
     {% elseif balise == 'audio' %}
-        <form action="index.php?action=new_element&balise={{balise}}" method="post" enctype="multipart/form-data">
+        <form action="index.php?action=create_elemnt_balise_audio&balise={{balise}}" method="post" enctype="multipart/form-data">
             <div class="form_post">
                     <div class="form_form">
-                        <select name="classCSS" id="classCSS" class="form_input">
-                            <option value="">--- Choisissez un style ---</option>
-                            <option value="img_left">Alignée à Gauche</option>
-                            <option value="img_right">Alignée à Droite</option>
-                            <option value="img_center">Alignée à Centre</option>
-                            <option value="full_size">Toute le largeur de la page</option>
-                        </select>
-                        <div class="form_input" id="InputFile">
-                            <label for="audioInp">
-                                Uploader un fichier audio 
-                                <input type="file" name="my_audio" id="audioInp" accept="audio/*"/>
-                            </label>
-                        </div>
-                        <input type="text" name="legende" id="legende" placeholder="Légende de l'audio" class="form_input">
-                        <input type="text" name="credit" id="credit" placeholder="Crédits de l'audio" class="form_input">
-                        <input type="number" name="position" id="position" min="1" max="100" placeholder="Position de l'element" class="form_input">
-                        <select name="article" class="form_input">
-                            <option value="">---Choisissez un article---</option>
-                            {% for article in articles %}
-                                <option value="{{article.id}}">{{article.article_name}}</option>                            
-                            {% endfor %}
+                        <select name="audio_image" class="form_input">
+                            <option>--- Choisissez le type d'audio que vous voulez ---</option>
+                            <option value="with">Avec Image</option>
+                            <option value="without">Sans Image</option>
                         </select>
                     </div>
             </div>
@@ -72,12 +57,10 @@
                     <div class="form_form">
                         <select name="classCSS" id="classCSS" class="form_input">
                             <option value="">--- Choisissez un style ---</option>
-                            <option value="img_left">Alignée à Gauche</option>
-                            <option value="img_right">Alignée à Droite</option>
-                            <option value="img_center">Alignée à Centre</option>
-                            <option value="full_size">Toute le largeur de la page</option>
+                            <option value="flot-left">A gauche du texte</option>
+                            <option value="float-right">A droite du texte</option>
+                            <option value="">Seule</option>
                         </select>
-                        {# <input type="text" name="classCSS" id="classCSS" placeholder="Classe CSS" class="form_input"> #}
                         <div class="form_input" id="InputFile">
                             <label for="videoInp">
                                 Uploader une vidéo
@@ -86,6 +69,12 @@
                         </div>
                         <input type="text" name="legende" id="legende" placeholder="Légende de la vidéo" class="form_input">
                         <input type="text" name="credit" id="credit" placeholder="Crédits de la vidéo" class="form_input">
+                        <div class="form_input" id="InputFile">
+                            <label for="imgInp">
+                                Changer l'image de couverture
+                                <input type="file" name="my_image_video" id="imgInp" accept="image/*"/>
+                            </label>
+                        </div>
                         <input type="number" name="position" id="position" min="1" max="100" placeholder="Position de l'element" class="form_input">
                         <select name="article" class="form_input">
                             <option value="">---Choisissez un article---</option>
@@ -106,12 +95,15 @@
                         <option value="img">Image</option>
                         <option value="video">Videos</option>
                         <option value="audio">Audio</option>
+                        <option value="audio_image">Audio avec Image</option>
+                        <option value="audio">Audio sans Image</option>
                     </select>
                     <select name="element2" class="form_input">
                         <option value="">--- Choisissez votre premier element ---</option>
                         <option value="img">Image</option>
                         <option value="video">Videos</option>
-                        <option value="audio">Audio</option>
+                        <option value="audio_image">Audio avec Image</option>
+                        <option value="audio">Audio sans Image</option>
                     </select>
                 </div>
             </div>
