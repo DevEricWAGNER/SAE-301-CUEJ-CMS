@@ -13,6 +13,7 @@
     <img src="{{unique_article.article_img}}">
     <h2>{{unique_article.article_chapo}}</h2>
     {% for contenu in contenu_article %}
+        <hr>
         {% if contenu.balise == 'img' %}
             <div class="{{contenu.classCSS1}}">
                 <img src="{{contenu.src1}}" alt="{{contenu.alt1}}">
@@ -306,6 +307,7 @@
             <{{contenu.balise}} class="{{contenu.classCSS1}}">{{contenu.content|replace({'\\\\': "<i>", "//" : "</i>"})|raw}}</{{contenu.balise}}>
         {% endif %}
     {% endfor %}
+        <hr>
 
     {# {% for article_in_page in articles_in_unique_page %}
         <h1>{{article_in_page.article_name}}</h1>
