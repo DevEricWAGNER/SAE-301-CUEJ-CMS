@@ -1,102 +1,88 @@
--- phpMyAdmin SQL Dump
--- version 5.1.4
--- https://www.phpmyadmin.net/
---
--- Host: mysql-wagnere.alwaysdata.net
--- Generation Time: Dec 04, 2022 at 11:40 AM
--- Server version: 10.6.8-MariaDB
--- PHP Version: 7.4.19
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `wagnere_cms_exercice`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `article`
---
-
 CREATE TABLE `article` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `article_name` varchar(255) NOT NULL,
-  `article_title` varchar(255) NOT NULL,
+  `article_name` varchar(40) NOT NULL,
   `article_desc` mediumtext NOT NULL,
-  `article_titre` text NOT NULL,
   `article_chapo` longtext NOT NULL,
-  `article_auteur` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `article`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `element`
---
+  `article_auteur` varchar(255) NOT NULL,
+  `article_page` int(11) NOT NULL,
+  `article_time` int(11) NOT NULL,
+  `article_img` text NOT NULL,
+  `article_vignette` text NOT NULL
+);
 
 CREATE TABLE `element` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `balise` varchar(20) NOT NULL,
-  `classCSS` varchar(255) NOT NULL,
+  `balise` varchar(255) NOT NULL,
+  `classCSS1` varchar(255) NOT NULL,
+  `classCSS2` varchar(255) NOT NULL,
+  `encadre_titre` text NOT NULL,
   `content` longtext NOT NULL,
-  `img_alt` varchar(255) NOT NULL,
-  `img_src` varchar(255) NOT NULL,
+  `alt1` varchar(255) NOT NULL,
+  `src1` varchar(255) NOT NULL,
+  `alt2` varchar(255) NOT NULL,
+  `src2` varchar(255) NOT NULL,
+  `alt_media1` varchar(255) NOT NULL,
+  `src_media1` varchar(255) NOT NULL,
+  `alt_media2` varchar(255) NOT NULL,
+  `src_media2` varchar(255) NOT NULL,
+  `legende1` text NOT NULL,
+  `credit1` text NOT NULL,
+  `legende2` varchar(255) NOT NULL,
+  `credit2` varchar(255) NOT NULL,
   `position` int(11) NOT NULL,
-  `article` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `article` bigint(20) UNSIGNED NOT NULL
+);
 
---
--- Dumping data for table `element`
---
+CREATE TABLE `membres` (
+  `id` int(11) NOT NULL,
+  `pseudo` varchar(255) NOT NULL,
+  `mail` varchar(255) NOT NULL,
+  `motdepasse` text NOT NULL,
+  `admin` int(11) NOT NULL
+);
 
---
--- Indexes for dumped tables
---
+INSERT INTO `membres` (`id`, `pseudo`, `mail`, `motdepasse`, `admin`) VALUES
+(1, 'Eric WAGNER', 'ericwagner.contact@gmail.com', 'fa75d53002abfa32d4efcccb5fde0647452fe77d', 1),
+(2, 'Mickaël Joly', 'jolymickael67340@gmail.com', '694619b0bd86e7c8c99c57844536221f80989b52', 1),
+(3, 'CUEJ_Etu', 'cuej_etu@gmail.com', '9815ecf1fd09fc7e1a6ba45edfb35df8bd6ea6df', 1);
 
---
--- Indexes for table `article`
---
+CREATE TABLE `page` (
+  `id` int(11) NOT NULL,
+  `page_name` varchar(40) NOT NULL,
+  `page_desc` longtext NOT NULL,
+  `page_img` varchar(255) NOT NULL
+);
+
 ALTER TABLE `article`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `fk_article_page` (`article_page`);
 
---
--- Indexes for table `element`
---
 ALTER TABLE `element`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `fk_element_article` (`article`);
 
---
--- AUTO_INCREMENT for dumped tables
---
+ALTER TABLE `membres`
+  ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT for table `article`
---
+ALTER TABLE `page`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `article`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `element`
---
 ALTER TABLE `element`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+ALTER TABLE `membres`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `page`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `article`
+  ADD CONSTRAINT `fk_article_page` FOREIGN KEY (`article_page`) REFERENCES `page` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `element`
+  ADD CONSTRAINT `fk_element_article` FOREIGN KEY (`article`) REFERENCES `article` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
