@@ -50,7 +50,7 @@
         <form action="index.php?action=new_element&balise={{balise}}" method="post" enctype="multipart/form-data">
             <div class="form_post">
                     <div class="form_form">
-                        <select name="classCSS" id="classCSS" class="form_input">
+                        <select name="classCSS1" id="classCSS" class="form_input">
                             <option value="">--- Choisissez un style ---</option>
                             <option value="float-left">A gauche du texte</option>
                             <option value="float-right">A droite du texte</option>
@@ -97,6 +97,38 @@
                 </div>
             </div>
             <input type="submit" value="Valider" class="form_input_submit" name="submit_content_media">
+        </form>
+    {% elseif balise == "encadre_media" %}
+        <form action="index.php?action=create_element_balise_encadre&balise={{balise}}" method="post" enctype="multipart/form-data">
+            <div class="form_post">
+                <div class="form_form">
+                    <select name="media" class="form_input">
+                        <option value="">--- Quel est le media de l'Encadré ---</option>
+                        <option value="img">Image</option>
+                        <option value="video">Videos</option>
+                        <option value="audio_image">Audio avec Image</option>
+                        <option value="audio">Audio sans Image</option>
+                    </select>
+                </div>
+            </div>
+            <input type="submit" value="Valider" class="form_input_submit" name="submit_content_media">
+        </form>
+    {% elseif balise == "encadre_content" %}
+        <form action="index.php?action=new_element&balise={{balise}}" method="post" enctype="multipart/form-data">
+            <div class="form_post">
+                <div class="form_form">
+                    <input type="text" name="title_encadre" id="title_encadre" placeholder="Titre de l'encadré" class="form_input">
+                    <input type="text" name="content" id="content" placeholder="Contenu de l'encadré" class="form_input">
+                    <input type="number" name="position" id="position" min="1" max="100" placeholder="Position de l'element" class="form_input">
+                    <select name="article" class="form_input">
+                        <option value="">---Choisissez un article---</option>
+                        {% for article in articles %}
+                            <option value="{{article.id}}">{{article.article_name}}</option>                            
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <input type="submit" value="Valider" class="form_input_submit" name="submit_encadre_content">
         </form>
     {% else %}
         <form action="index.php?action=new_element&balise={{balise}}" method="post" enctype="multipart/form-data">

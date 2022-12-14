@@ -22,7 +22,7 @@
                 <span class="legende">{{contenu.legende1}}</span>
             </div>
         {% elseif contenu.balise == 'video' %}
-            <video id="my-video" class="video-js" controls preload="auto" width="160" poster="img/asterix.jpeg" data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }'>
+            <video id="my-video" class="video-js" controls preload="auto" width="160" poster="{{contenu.src_media1}}" data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }'>
                 <source src="{{contenu.src1}}" type="video/mp4" />
             </video>
             <br>
