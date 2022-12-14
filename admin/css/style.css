@@ -104,16 +104,6 @@ main {
     border:thin solid black;
   }
 
-div.form_input input{
-    display: none;
-  }
-div.form_input label{
-    cursor:pointer;
-    line-height: 44px;
-  }
-div.form_input #imageName{
-    color:green;
-  }
 
 form {
     display: flex;

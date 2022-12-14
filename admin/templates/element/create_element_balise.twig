@@ -8,19 +8,14 @@
                     <div class="form_form">
                         <select name="classCSS" id="classCSS" class="form_input">
                             <option value="">--- Choisissez un style ---</option>
-                            <option value="flot-left modal">A gauche du texte avec Trigger</option>
+                            <option value="float-left modal">A gauche du texte avec Trigger</option>
                             <option value="float-right modal">A droite du texte avec Trigger</option>
                             <option value="modal">Seule avec Trigger</option>
-                            <option value="flot-left">A gauche du texte sans Trigger</option>
+                            <option value="float-left">A gauche du texte sans Trigger</option>
                             <option value="float-right">A droite du texte sans Trigger</option>
                             <option value="">Seule sans Trigger</option>
                         </select>
-                        <div class="form_input" id="InputFile">
-                            <label for="imgInp">
-                                Changer l'image
-                                <input type="file" name="my_image" id="imgInp" accept="image/*"/>
-                            </label>
-                        </div>
+                        <input type="file" name="my_image" id="imgInp" accept="image/*"/>
                         <input type="text" name="legende" id="legende" placeholder="Légende de l'image" class="form_input">
                         <input type="text" name="credit" id="credit" placeholder="Crédits de l'image" class="form_input">
                         <input type="number" name="position" id="position" min="1" max="100" placeholder="Position de l'element" class="form_input">
@@ -57,16 +52,11 @@
                     <div class="form_form">
                         <select name="classCSS" id="classCSS" class="form_input">
                             <option value="">--- Choisissez un style ---</option>
-                            <option value="flot-left">A gauche du texte</option>
+                            <option value="float-left">A gauche du texte</option>
                             <option value="float-right">A droite du texte</option>
                             <option value="">Seule</option>
                         </select>
-                        <div class="form_input" id="InputFile">
-                            <label for="videoInp">
-                                Uploader une vidéo
-                                <input type="file" name="my_video" id="videoInp" accept="video/*"/>
-                            </label>
-                        </div>
+                        <input type="file" name="my_video" id="videoInp" accept="video/*"/>
                         <input type="text" name="legende" id="legende" placeholder="Légende de la vidéo" class="form_input">
                         <input type="text" name="credit" id="credit" placeholder="Crédits de la vidéo" class="form_input">
                         <div class="form_input" id="InputFile">
@@ -94,7 +84,6 @@
                         <option value="">--- Choisissez votre premier element ---</option>
                         <option value="img">Image</option>
                         <option value="video">Videos</option>
-                        <option value="audio">Audio</option>
                         <option value="audio_image">Audio avec Image</option>
                         <option value="audio">Audio sans Image</option>
                     </select>
@@ -114,7 +103,6 @@
             <div class="form_post">
                 <div class="form_form">
                     <input type="text" name="content" id="content" placeholder="Contenu de la balise" class="form_input">
-                    <input type="text" name="classCSS" id="classCSS" placeholder="Classe CSS" class="form_input">
                     <input type="number" name="position" id="position" min="1" max="100" placeholder="Position de l'element" class="form_input">
                     <select name="article" class="form_input">
                         <option value="">---Choisissez un article---</option>
