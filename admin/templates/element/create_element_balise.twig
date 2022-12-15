@@ -130,6 +130,22 @@
             </div>
             <input type="submit" value="Valider" class="form_input_submit" name="submit_encadre_content">
         </form>
+    {% elseif balise == 'h5' %}
+        <form action="index.php?action=new_element&balise={{balise}}" method="post" enctype="multipart/form-data">
+            <div class="form_post">
+                <div class="form_form">
+                    <input type="text" name="content" id="content" placeholder="Contenu de la balise" class="form_input exergue">
+                    <input type="number" name="position" id="position" min="1" max="100" placeholder="Position de l'element" class="form_input">
+                    <select name="article" class="form_input">
+                        <option value="">---Choisissez un article---</option>
+                        {% for article in articles %}
+                            <option value="{{article.id}}">{{article.article_name}}</option>                            
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <input type="submit" value="Valider" class="form_input_submit" name="submit_text">
+        </form>
     {% else %}
         <form action="index.php?action=new_element&balise={{balise}}" method="post" enctype="multipart/form-data">
             <div class="form_post">

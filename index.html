@@ -1,9 +1,10 @@
-<html lang="fr">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{% block title %}{% endblock %}</title>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Site partie Front CUEJ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,40 +13,16 @@
     />
     <link rel="stylesheet" href="styles/style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
-	<link rel="stylesheet" href="css/style.css">
-    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
-    {% block desc %}{% endblock %}
-	
-</head>
-
-<body>
-    
-	<nav id="nav" class="px-3 lg:px-[30px]">
+  </head>
+  <body>
+    <nav id="nav" class="px-3 lg:px-[30px]">
       <a href="index.html">
         <img class="w-[80px] h-[80px]" src="images/logo.png" alt="logo" />
       </a>
       <ul class="nav-links">
-      {% for page in pages %}
-        <li>
-          <a class="slide-line flex gap-[20px] items-center" href="#">
-            <span>{{page.page_name}}</span>
-            <button>
-              <img
-                src="images/icons/icon-arrow-down.svg"
-                alt="icon-arrow-down"
-              />
-            </button>
-          </a>
-          <ul class="submenu my-5 flex-col gap-y-2 pl-4 text-xl">
-            {% for article in page.articles %}
-              <li>
-                <a href="#" class="hover:font-bold">{{article.article_name}}</a>
-              </li>
-				    {% endfor %}
-          </ul>
-        </li>
-      {% endfor %}
-        <li><a class="slide-line" href="#">Crédits</a></li>
+        <li><a class="slide-line" href="#">Nos amis les bêtes</a></li>
+        <li><a class="slide-line" href="#">De la ferme à l'assiette</a></li>
+        <li><a class="slide-line" href="#">Libérées, Délivreées</a></li>
       </ul>
 
       <div class="hamburger">
@@ -54,7 +31,7 @@
         <div class="line"></div>
       </div>
     </nav>
-    
+
     <header
       id="header"
       style="
@@ -120,16 +97,9 @@
       </a>
     </nav>
 
-    <footer
-      class="mt-[150px] h-[75px] bg-gray-200 flex items-center justify-center text-black"
-    >
+    <footer class="mt-[150px] h-[75px] bg-gray-200 flex items-center justify-center text-black">
       <p>Crédit &copy; 2022</p>
     </footer>
-
-	<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
-	<script src="js/main.js"></script>
-  <script src="js/script.js"></script>
-	
-</body>
-
+    <script src="js/script.js"></script>
+  </body>
 </html>

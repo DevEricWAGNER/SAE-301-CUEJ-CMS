@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page front details d'un article</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+    />
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="styles/audio.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <nav id="nav" class="px-3 lg:px-[30px]">
+      <a href="index.html">
+        <img class="w-[80px] h-[80px]" src="images/logo.png" alt="logo" />
+      </a>
+      <ul class="nav-links">
+        <li><a class="slide-line" href="#">Nos amis les bêtes</a></li>
+        <li><a class="slide-line" href="#">De la ferme à l'assiette</a></li>
+        <li><a class="slide-line" href="#">Libérées, Délivreées</a></li>
+      </ul>
+
+      <div class="hamburger">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
+    </nav>
+
+    <header
+      id="header"
+      style="
+        background-image: url('https://images.unsplash.com/photo-1522403236043-29876aa85962?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80');
+      "
+      class="flex flex-col justify-end px-5 pb-12 h-[90vh] bg-cover bg-center md:px-12 md:pb-[90px]"
+    >
+      <div class="relative flex">
+        <h1
+          style="font-family: 'Montserrat', sans-serif"
+          class="text-4xl bg-[#64D039] text-white py-4 px-5 font-bold drop-shadow-md md:text-6xl"
+        >
+          Faire le deuil <br />de son animal mort
+        </h1>
+        <a class="hidden md:block" href="#chapo">
+          <div class="scroll-down"></div>
+        </a>
+      </div>
+    </header>
+
+    <!-- SUr cette page, vous trouverez tous les éléments liées à un article, il faudra faire le tri coté back -->
+    <main class="container-sm">
+      <!-- Elements - Châpo d'un article  -->
+      <p
+        id="chapo"
+        style="font-family: 'Lora', serif"
+        class="text-3xl italic py-[90px] text-lef font-medium leading-10"
+      >
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum rerum
+        tenetur natus officiis, qui expedita obcaecati ullam amet at eveniet
+        fugit neque necessitatibus aperiam consequuntur quo, velit ab, debitis
+        repellendus? uuntur quaerat quis doloribus quam? Eaque voluptatem esse
+        possimus unde iste!
+      </p>
+
+      <section id="article">
+        <!-- Element - Article avec Image (+légende +crédit, position float left) à gauche  -->
+        <article>
+          <!-- Element - Inter titre  -->
+          <h3
+            style="font-family: 'Montserrat', sans-serif"
+            class="text-3xl w-fit px-3 mb-4 border-b-4 border-[#64D039] mb-[25px]"
+          >
+            Animaux
+          </h3>
+
+          <div class="float-left pr-5 w-[255px]">
+            <img
+              class="max-w-full"
+              src="images/articles/article-efficace.png"
+              alt="article-test-img"
+            />
+            <!-- Légendes image -->
+            <span class="text-sm my-3 block"
+              >Une légende détaillée et très interressante. Tout ceci est
+              passionant
+            </span>
+            <!-- Crédit image  -->
+            <span class="text-sm text-gray-500">Crédits</span>
+          </div>
+
+          <p class="text-lg">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt cum
+            voluptate quibusdam voluptates iat? Lorem ipsum dolor sit amet con
+            nisi repudiandae rem corrupti. Quia. Lorem ipsum dolor sit amet
+            consecm ad expedita facere nisi consectetur tempore ea? Quam vel
+            vitae deserunt. Voluptas eveniet distinctio quaerat sint cum? Lorem
+            ipsum dolor sit, amet consectetur adipisicing elit. Aliquid corrupti
+            numquam doloribus at rem molestias eveniet, sit pariatur, ipsam
+            recusandae excepturi! Rem dolorum pariatur commodi cupiditate ab
+            corrupti adipisci expedita! Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Repudiandae quod nam recusandae dolores enim
+            tenetur commodi ad! Voluptatum distinctio, perferendis, tenetur
+            tempora impedit, a repellat obcaecati quia quas et ducimus? Lorem
+            ipsum dolor sit amet consectetur adipisicing elit. Voluptatum quam
+            corporis consectetur perspiciatis dolorem cum nihil sit saepe
+            doloremque in. Blanditiis autem odio expedita quisquam! Sequi
+            aliquam quam odio voluptatem! Lorem, ipsum dolor sit amet
+            consectetur adipisicing elit. Provident doloribus esse labore eum
+            quidem saepe cumque earum cupiditate praesentium ipsam sequi ratione
+            vero, quasi iusto dicta molestiae. Aperiam, voluptas aliquam. Lorem
+            ipsum, dolor sit amet consectetur adipisicing elit. Amet quidem ipsa
+            veritatis ut ratione non esse soluta maiores dolores adipisci nemo
+            officia at dicta ad placeat, ex voluptas inventore tempora. Lorem
+            ipsum dolor sit amet, consectetur adipisicing elit. Cum assumenda
+            necessitatibus quo et, ut numquam temporibus doloremque suscipit,
+            consequuntur quos nam sint veniam qui sed, mollitia enim reiciendis
+            tempora aspernatur. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Rerum officia expedita dolorem nobis. Ut quaerat
+            laudantium placeat vel sapiente eligendi doloremque voluptates,
+            dignissimos ipsam explicabo! Dolorum accusamus iure enim nisi?
+          </p>
+        </article>
+
+        <!-- Element - Article simple avec du texte et un inter titre -->
+        <article class="mt-12">
+          <!-- Element - Inter titre  -->
+          <h3
+            style="font-family: 'Montserrat', sans-serif"
+            class="text-3xl w-fit px-3 mb-4 border-b-4 border-[#64D039] mb-[25px]"
+          >
+            Animaux
+          </h3>
+
+          <p class="text-lg">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt cum
+            voluptate quibusdam voluptates iat? Lorem ipsum dolor sit amet con
+            nisi repudiandae rem corrupti. Quia. Lorem ipsum dolor sit amet
+            consecm ad expedita facere nisi consectetur tempore ea? Quam vel
+            vitae deserunt. Voluptas eveniet distinctio quaerat sint cum? Lorem
+            ipsum dolor sit, amet consectetur adipisicing elit. Aliquid corrupti
+            numquam doloribus at rem molestias eveniet, sit pariatur, ipsam
+            recusandae excepturi! Rem dolorum pariatur commodi cupiditate ab
+            corrupti adipisci expedita! Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Repudiandae quod nam recusandae dolores enim
+            tenetur commodi ad! Voluptatum distinctio, perferendis, tenetur
+            tempora impedit, a repellat obcaecati quia quas et ducimus? Lorem
+            ipsum dolor sit amet consectetur adipisicing elit. Voluptatum quam
+            corporis consectetur perspiciatis dolorem cum nihil sit saepe
+            doloremque in. Blanditiis autem odio expedita quisquam! Sequi
+            aliquam quam odio voluptatem! Lorem, ipsum dolor sit amet
+            consectetur adipisicing elit. Provident doloribus esse labore eum
+            quidem saepe cumque earum cupiditate praesentium ipsam sequ
+          </p>
+        </article>
+
+        <!-- Element - Encadré  -->
+        <article class="mt-12 p-7 bg-[#64D039] text-white">
+          <h4
+            style="font-family: 'Montserrat', sans-serif"
+            class="text-2xl w-fit px-3 mb-4 border-b-4 border-white mb-[25px]"
+          >
+            Les Animaux Morts
+          </h4>
+
+          <p class="text-lg">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt cum
+            voluptate quibusdam voluptates consectetur adipisicing elit. Aliquid
+            corrupti numquam doloribus at rem molestias eveniet, sit pariatur.
+            Abracadabra c'est magnifique !
+          </p>
+
+          <div class="mt-12">
+            <img src="images/articles/article-img-test.png" alt="" />
+            <div class="flex justify-between">
+              <p class="mt-3">
+                Une légende détaillée et très interressante. Tout ceci est
+                passionant
+              </p>
+              <p class="mt-3">Crédits</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Element exergue  -->
+        <article class="py-[120px]">
+          <h5
+            class="italic text-center text-3xl"
+            style="font-family: 'Lora', serif"
+          >
+            <span class="text-[#64D039] font-bold"> << </span>
+            Ceci est un exergue impressionnant !
+            <span class="text-[#64D039] font-bold"> >> </span>
+          </h5>
+        </article>
+
+        <!-- Element vidéo  -->
+        <article>
+          <!-- Element - Inter titre  -->
+          <h3
+            style="font-family: 'Montserrat', sans-serif"
+            class="text-3xl w-fit px-3 mb-4 border-b-4 border-[#64D039] mb-[25px]"
+          >
+            Vidéo
+          </h3>
+            <video
+            id="my-video1"
+            class="video-js vjs-matrix"
+            controls
+            preload="auto"
+            width="640"
+            height="264"
+            poster="img/orelsan.jpeg"
+            data-setup='{ "playbackRates": [0.5, 1, 1.5, 2] }'
+            style="--color:#eeb652;"
+            >
+            <source src="./video/SuicideSocial.mp4" type="video/mp4" />
+            <p class="vjs-no-js vjs-big-play-centered">
+              Pour voir cette vidéo, activez le javascript ou mettez à jour votre navigateur. 
+              <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+            </p>
+          </video>
+        </article>
+
+        <!-- Element Image  -->
+        <article class="mt-12">
+          <h3
+            style="font-family: 'Montserrat', sans-serif"
+            class="text-3xl w-fit px-3 mb-4 border-b-4 border-[#64D039] mb-[25px]"
+          >
+            Image
+          </h3>
+
+          <div class="mt-12">
+            <img src="images/articles/article-img-test.png" alt="" />
+            <div class="flex justify-between">
+              <p class="mt-3">
+                Une légende détaillée et très interressante. Tout ceci est
+                passionant
+              </p>
+              <p class="mt-3">Crédits</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Element audio  -->
+        <article class="mt-12">
+          <h3
+            style="font-family: 'Montserrat', sans-serif"
+            class="text-3xl w-fit px-3 mb-4 border-b-4 border-[#64D039] mb-[25px]"
+          >
+            Audio
+          </h3>
+          <p>en cours..</p>
+        </article>
+
+        <!-- Element FAQ  -->
+        <article class="my-12">
+          <h3
+            style="font-family: 'Montserrat', sans-serif"
+            class="text-3xl w-fit px-3 mb-4 border-b-4 border-[#64D039] mb-[25px]"
+          >
+            FAQ
+          </h3>
+
+          <div class="flex flex-col gap-y-[50px] mt-12">
+            <div>
+              <h4 class="font-bold text-2xl">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis
+                recusandae saepe quasi quaerat nesciunt ?
+              </h4>
+              <p class="mt-4 pl-4">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Consectetur earum, temporibus blanditiis a fugit inventore
+                asperiores nemo quidem quasi eaque quaerat voluptates, nobis
+                quisquam qui officia vel deleniti accusantium debitis.
+              </p>
+            </div>
+
+            <div>
+              <h4 class="font-bold text-2xl">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis
+                recusandae saepe quasi quaerat nesciunt ?
+              </h4>
+              <p class="mt-4 pl-4">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Consectetur earum, temporibus blanditiis a fugit inventore
+                asperiores nemo quidem quasi eaque quaerat voluptates, nobis
+                quisquam qui officia vel deleniti accusantium debitis.
+              </p>
+            </div>
+
+            <div>
+              <h4 class="font-bold text-2xl">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis
+                recusandae saepe quasi quaerat nesciunt ?
+              </h4>
+              <p class="mt-4 pl-4">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Consectetur earum, temporibus blanditiis a fugit inventore
+                asperiores nemo quidem quasi eaque quaerat voluptates, nobis
+                quisquam qui officia vel deleniti accusantium debitis.
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Section - Autres articles  -->
+      <section id="articles" class="pt-12">
+        <h3
+          style="font-family: 'Montserrat', sans-serif"
+          class="text-3xl w-fit px-3 mb-4 border-b-4 border-[#64D039] mb-[25px]"
+        >
+          Autres articles
+        </h3>
+        <div class="swiper">
+          <div class="swiper-wrapper">
+            <!-- Slides -->
+            <div class="swiper-slide">
+              <article>
+                <img class="w-full" src="images/slider-1.png" alt="" />
+                <h3 class="my-3 font-bold text-xl">
+                  How to build a healthy relationship with tough clients
+                </h3>
+                <span class="text-[#8F8F8F]">John Doe</span>
+              </article>
+            </div>
+            <div class="swiper-slide">
+              <article>
+                <img class="w-full" src="images/slider-2.png" alt="" />
+                <h3 class="my-3 font-bold text-xl">
+                  How to build a healthy relationship with tough clients
+                </h3>
+                <span class="text-[#8F8F8F]">John Doe</span>
+              </article>
+            </div>
+            <div class="swiper-slide">
+              <article>
+                <img class="w-full" src="images/slider-3.png" alt="" />
+                <h3 class="my-3 font-bold text-xl">
+                  How to build a healthy relationship with tough clients
+                </h3>
+                <span class="text-[#8F8F8F]">John Doe</span>
+              </article>
+            </div>
+          </div>
+
+          <!-- navigations -->
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mt-[150px] h-[75px] bg-gray-200 flex items-center justify-center text-black">
+      <p>Crédit &copy; 2022</p>
+    </footer>
+    <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script> 
+    <script src="js/script.js"></script>
+    <script src="js/audio.js"></script>
+  </body>
+</html>

@@ -238,6 +238,10 @@ aside a:hover {
     background-color: lightgreen;
 }
 
+video {
+    color: #0000EE;
+}
+
 .vjs-modal-dialog-content {
     display:flex;
     align-items: center;
@@ -251,7 +255,6 @@ aside a:hover {
     left:50%!important;
     top:50%!important;
  } 
-
 
 .flex-row {
     display: flex;

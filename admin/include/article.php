@@ -135,6 +135,15 @@
             $tableau = $query->fetchAll(PDO::FETCH_CLASS,'Article');
             return $tableau;
         }
+          static function readByPage($id) {
+            $sql= 'SELECT * FROM article WHERE article.article_page = :page_id;';
+            $pdo = connexion();
+            $query = $pdo->prepare($sql);
+            $query->bindValue(':page_id', $id, PDO::PARAM_INT);
+            $query->execute();
+            $tableau = $query->fetchAll(PDO::FETCH_CLASS,'Article');
+            return $tableau;
+        }
     }
 
 ?>

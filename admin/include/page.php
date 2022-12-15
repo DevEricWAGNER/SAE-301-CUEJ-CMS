@@ -5,6 +5,7 @@
         public $page_name;
         public $page_desc;
         public $page_img;
+        public $articles;
 
         static function readAll() {
             $sql= 'SELECT * FROM page';
